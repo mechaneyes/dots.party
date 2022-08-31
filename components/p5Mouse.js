@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import p5 from "p5";
 
-const Mousey = () => {
+const p5Mouse = () => {
   const pFiveRef = useRef();
   
   let mousePos = (theMousePos) => {
@@ -41,4 +41,4 @@ const Mousey = () => {
   return <div ref={pFiveRef} />;
 };
 
-export default Mousey;
+export default p5Mouse;

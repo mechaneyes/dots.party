@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
-const ReactMouse = dynamic(
-  () => import("../components/reactMouse"),
+const P5Mouse = dynamic(
+  () => import("../components/p5Mouse"),
   { ssr: false }
 );
 
@@ -9,7 +9,7 @@ const ReactMouse = dynamic(
 const Mouse = () => {
   return (
     <>
-      <ReactMouse />
+      <P5Mouse />
     </>
   );
 };

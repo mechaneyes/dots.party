@@ -5,7 +5,7 @@ const s = sketch => {
     let y = 20
 
     sketch.setup = () => {
-        sketch.createCanvas(200, 200)
+        sketch.createCanvas(window.innerWidth, 200)
     }
 
     sketch.draw = () => {

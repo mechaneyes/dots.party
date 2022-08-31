@@ -1,6 +1,6 @@
 import Layout from '../components/layout'
 import '../styles.scss'
-import '../styles/footer.scss'
+import '../styles/general.scss'
 
 const ZeeApp = ({ Component, pageProps }) => {
   return (

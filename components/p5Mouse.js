@@ -1,21 +1,19 @@
 import { useRef, useEffect } from "react";
 import p5 from "p5";
 
-const p5Mouse = () => {
-  const pFiveRef = useRef();
-  
-  let mousePos = (theMousePos) => {
-    console.log("s.mouseX", theMousePos);
-    return theMousePos;
-  };
+export let mousePos;
+
+const p5Mouse = ({ sendMouseDeets }) => {
+  // a state that should change as frequently as possible but should not
+  // trigger full re-rendering of the component.
+  // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
+  //
+  const mouseRef = useRef();
 
   useEffect(() => {
     const Sketch = (s) => {
-      let cnv
-
       s.setup = () => {
-        cnv = s.createCanvas(window.innerWidth, 200);
-        cnv.mouseMoved(mousePos);
+        s.createCanvas(window.innerWidth, 200);
         s.noStroke();
         s.rectMode(s.CENTER);
       };
@@ -30,15 +28,18 @@ const p5Mouse = () => {
 
         s.fill(237, 34, 93, r2);
         s.rect(s.width / 2 - r2 / 2, s.height / 2, r2, r2);
+      };
 
-        mousePos(s.mouseX);
+      s.mouseMoved = () => {
+        // mouseRef.current = s.mouseX;
+        sendMouseDeets(s.mouseX)
       };
     };
 
-    const thisP5 = new p5(Sketch, pFiveRef.current);
+    new p5(Sketch);
   }, []);
 
-  return <div ref={pFiveRef} />;
+  return <div ref={mouseRef} />;
 };
 
 export default p5Mouse;

@@ -13,8 +13,8 @@ const SocketHandler = (req, res) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      console.log("io.on('connection')");
-
+      console.log('connection success')
+      
       socket.on("mouse-change", (msg) => {
         socket.broadcast.emit("update-mouse", msg);
         console.log("update-mouse", msg);

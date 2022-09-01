@@ -1,11 +1,11 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import io from "socket.io-client";
 import p5 from "p5";
 
 export let mousePos;
 let socket;
 
-const p5Mouse = () => {
+const RectOne = () => {
   // ————————————————————————————————————o————————————————————————————————————o useRef() -->
   // ————————————————————————————————————o useRef() —>
   //
@@ -14,7 +14,7 @@ const p5Mouse = () => {
   // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
   //
   const mousePos = useRef(0);
-  
+
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
   //
@@ -32,7 +32,7 @@ const p5Mouse = () => {
       mousePos.current = msg;
     });
   };
-  
+
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
   //
@@ -64,7 +64,7 @@ const p5Mouse = () => {
     };
   };
 
-  return null
+  return null;
 };
 
-export default p5Mouse;
+export default RectOne;

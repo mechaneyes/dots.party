@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
-const P5Mouse = dynamic(() => import("../components/p5Mouse"), { ssr: false });
+const RectOne = dynamic(() => import("../components/RectOne"), { ssr: false });
 // const MousePos = dynamic(() =>
-//   import("../components/p5Mouse").then((mod) => mod.mousePos, {
+//   import("../components/RectOne").then((mod) => mod.mousePos, {
 //     ssr: false,
 //   })
 // );
@@ -12,7 +12,7 @@ const Mouse = () => {
   //
   return (
     <>
-      <P5Mouse />
+      <RectOne />
     </>
   );
 };

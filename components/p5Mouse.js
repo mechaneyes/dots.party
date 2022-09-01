@@ -3,12 +3,20 @@ import p5 from "p5";
 
 export let mousePos;
 
-const p5Mouse = ({ sendMouseDeets }) => {
+const p5Mouse = ({ sendMouseDeets, childMouse }) => {
+  // ————————————————————————————————————o————————————————————————————————————o useRef() -->
+  // ————————————————————————————————————o useRef() —>
+  // 
   // a state that should change as frequently as possible but should not
   // trigger full re-rendering of the component.
   // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
   //
+  // Look to "let r1 = s.map(mouseRef.current, 0," below to see where
+  // mouseRef is being used instead of mouseX
+  // 
   const mouseRef = useRef();
+
+  // console.log("childMouse", childMouse);
 
   useEffect(() => {
     const Sketch = (s) => {
@@ -20,7 +28,7 @@ const p5Mouse = ({ sendMouseDeets }) => {
 
       s.draw = () => {
         s.background(230);
-        let r1 = s.map(s.mouseX, 0, s.width, 0, s.height);
+        let r1 = s.map(mouseRef.current, 0, s.width, 0, s.height);
         let r2 = s.height - r1;
 
         s.fill(237, 34, 93, r1);
@@ -31,8 +39,8 @@ const p5Mouse = ({ sendMouseDeets }) => {
       };
 
       s.mouseMoved = () => {
-        // mouseRef.current = s.mouseX;
-        sendMouseDeets(s.mouseX)
+        mouseRef.current = s.mouseX;
+        sendMouseDeets(s.mouseX);
       };
     };
 

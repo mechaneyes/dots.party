@@ -13,12 +13,9 @@ const SocketHandler = (req, res) => {
     res.socket.server.io = io
 
     io.on('connection', socket => {
-      socket.on('input-change', msg => {
-        socket.broadcast.emit('update-input', msg)
-      })
-
       socket.on('mouse-pos-change', msg => {
         socket.broadcast.emit('update-mouse-pos', msg)
+        console.log('update-mouse-pos', msg)
       })
     })
   }

@@ -14,7 +14,10 @@ const p5Mouse = () => {
   // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
   //
   const mousePos = useRef(0);
-
+  
+  // ————————————————————————————————————o————————————————————————————————————o socket.io -->
+  // ————————————————————————————————————o socket.io —>
+  //
   useEffect(() => socketInitializer(), []);
 
   const socketInitializer = async () => {
@@ -29,7 +32,10 @@ const p5Mouse = () => {
       mousePos.current = msg;
     });
   };
-
+  
+  // ————————————————————————————————————o————————————————————————————————————o p5 -->
+  // ————————————————————————————————————o p5 —>
+  //
   useEffect(() => new p5(Sketch), []);
 
   const Sketch = (s) => {
@@ -58,7 +64,7 @@ const p5Mouse = () => {
     };
   };
 
-  return <div />;
+  return null
 };
 
 export default p5Mouse;

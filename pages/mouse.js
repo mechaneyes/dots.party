@@ -1,6 +1,3 @@
-import { useRef, useEffect, useState } from "react";
-import io from "socket.io-client";
-
 import dynamic from "next/dynamic";
 const P5Mouse = dynamic(() => import("../components/p5Mouse"), { ssr: false });
 // const MousePos = dynamic(() =>

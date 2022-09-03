@@ -62,19 +62,27 @@ const DotOne = () => {
         rad += 2;
         theDot.current = new Dot(rad);
 
+        console.log('theDot.current.red', theDot.current.red)
+
         socket.emit("add-dot", [
           theDot.current.x,
           theDot.current.y,
           theDot.current.rad,
+          theDot.current.red,
+          theDot.current.green,
+          theDot.current.blue,
         ]);
         // console.log("theDot.current", theDot.current);
       }
 
-      console.log("spreadDots", spreadDots[0], spreadDots[1]);
+    //   console.log("spreadDots", spreadDots[0], spreadDots[1]);
       externalDots = new ExternalDot(
         spreadDots[0],
         spreadDots[1],
-        spreadDots[2]
+        spreadDots[2],
+        spreadDots[3],
+        spreadDots[4],
+        spreadDots[5]
       );
     };
 
@@ -89,21 +97,27 @@ const DotOne = () => {
         this.x = s.mouseX;
         this.y = s.mouseY;
         this.rad = rad;
+        this.red = s.random(255)
+        this.green = s.random(255)
+        this.blue = s.random(255)
 
         s.noStroke;
-        s.fill(s.random(255), s.random(255), s.random(255));
+        s.fill(this.red, this.green, this.blue);
         s.circle(this.x, this.y, this.rad);
       }
     };
 
     let ExternalDot = class {
-      constructor(x, y, rad) {
+      constructor(x, y, rad, red, green, blue) {
         this.x = x;
         this.y = y;
         this.rad = rad;
+        this.red = red
+        this.green = green
+        this.blue = blue
 
         s.noStroke;
-        s.fill(s.random(255), s.random(255), s.random(255));
+        s.fill(this.red, this.green, this.blue);
         s.circle(this.x, this.y, this.rad);
       }
     };

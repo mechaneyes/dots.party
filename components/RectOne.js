@@ -21,7 +21,7 @@ const RectOne = () => {
   useEffect(() => socketInitializer(), []);
 
   const socketInitializer = async () => {
-    await fetch("/api/socket");
+    await fetch("/api/socketRect");
     socket = io();
 
     socket.on("connect", () => {

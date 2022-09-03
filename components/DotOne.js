@@ -40,27 +40,41 @@ const DotOne = () => {
 
   const Sketch = (s) => {
     s.setup = () => {
-      s.createCanvas(window.innerWidth, 200);
+      s.createCanvas(window.innerWidth, window.innerHeight);
       s.noStroke();
       s.rectMode(s.CENTER);
-    };
-
-    s.draw = () => {
       s.background(230);
-      let r1 = s.map(mousePos.current, 0, s.width, 0, s.height);
-      let r2 = s.height - r1;
-
-      s.fill(237, 34, 93, r1);
-      s.ellipse(s.width / 2 + r1 / 2, s.height / 2, r1, r1);
-
-      s.fill(237, 34, 93, r2);
-      s.ellipse(s.width / 2 - r2 / 2, s.height / 2, r2, r2);
     };
 
-    s.mouseMoved = () => {
-      mousePos.current = s.mouseX;
-      socket.emit("mouse-change", mousePos.current);
-      console.log("mousePos.current", mousePos.current);
+    let dot;
+    let rad;
+
+    // ————————————————————————————————————o draw —>
+    //
+    s.draw = () => {
+      if (s.mouseIsPressed === true) {
+        rad += 2;
+        dot = new Dot(rad);
+        console.log("dot", dot);
+      }
+    };
+
+    s.mousePressed = () => {
+      rad = 20;
+    };
+
+    // ————————————————————————————————————o dot class —>
+    //
+    let Dot = class {
+      constructor(rad) {
+        this.x = s.mouseX;
+        this.y = s.mouseY;
+        this.rad = rad;
+
+        s.noStroke;
+        s.fill(s.random(255), s.random(255), s.random(255));
+        s.circle(this.x, this.y, this.rad);
+      }
     };
   };
 

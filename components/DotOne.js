@@ -13,7 +13,7 @@ const DotOne = () => {
   // but should not trigger full re-rendering of the component.
   // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
   //
-  const mousePos = useRef(0);
+  const theDot = useRef(0);
 
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
@@ -21,15 +21,15 @@ const DotOne = () => {
   useEffect(() => socketInitializer(), []);
 
   const socketInitializer = async () => {
-    await fetch("/api/socket");
+    await fetch("/api/socketDots");
     socket = io();
 
     socket.on("connect", () => {
       console.log("connected");
     });
 
-    socket.on("update-mouse", (msg) => {
-      mousePos.current = msg;
+    socket.on("update-dot", (msg) => {
+        theDot.current = msg;
     });
   };
 
@@ -43,7 +43,7 @@ const DotOne = () => {
       s.createCanvas(window.innerWidth, window.innerHeight);
       s.noStroke();
       s.rectMode(s.CENTER);
-      s.background(230);
+      s.background(0);
     };
 
     let dot;
@@ -54,8 +54,10 @@ const DotOne = () => {
     s.draw = () => {
       if (s.mouseIsPressed === true) {
         rad += 2;
-        dot = new Dot(rad);
-        console.log("dot", dot);
+        theDot.current = new Dot(rad);
+
+        socket.emit("add-dot", theDot.current);
+        console.log('theDot.current', theDot.current)
       }
     };
 

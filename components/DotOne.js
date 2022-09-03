@@ -14,6 +14,8 @@ const DotOne = () => {
   // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
   //
   const theDot = useRef(0);
+  const spreadDots = useRef(0);
+  //   let spreadDots
 
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
@@ -29,7 +31,10 @@ const DotOne = () => {
     });
 
     socket.on("update-dot", (msg) => {
-        theDot.current = msg;
+      let externalDots = msg;
+      //   console.log('externalDots.current', ...externalDots)
+      spreadDots = [...externalDots];
+      //   console.log('spreadDots', spreadDots[0], spreadDots[1])
     });
   };
 
@@ -48,6 +53,7 @@ const DotOne = () => {
 
     let dot;
     let rad;
+    let externalDots;
 
     // ————————————————————————————————————o draw —>
     //
@@ -56,9 +62,20 @@ const DotOne = () => {
         rad += 2;
         theDot.current = new Dot(rad);
 
-        socket.emit("add-dot", theDot.current);
-        console.log('theDot.current', theDot.current)
+        socket.emit("add-dot", [
+          theDot.current.x,
+          theDot.current.y,
+          theDot.current.rad,
+        ]);
+        // console.log("theDot.current", theDot.current);
       }
+
+      console.log("spreadDots", spreadDots[0], spreadDots[1]);
+      externalDots = new ExternalDot(
+        spreadDots[0],
+        spreadDots[1],
+        spreadDots[2]
+      );
     };
 
     s.mousePressed = () => {
@@ -71,6 +88,18 @@ const DotOne = () => {
       constructor(rad) {
         this.x = s.mouseX;
         this.y = s.mouseY;
+        this.rad = rad;
+
+        s.noStroke;
+        s.fill(s.random(255), s.random(255), s.random(255));
+        s.circle(this.x, this.y, this.rad);
+      }
+    };
+
+    let ExternalDot = class {
+      constructor(x, y, rad) {
+        this.x = x;
+        this.y = y;
         this.rad = rad;
 
         s.noStroke;

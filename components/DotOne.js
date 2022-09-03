@@ -2,9 +2,6 @@ import { useRef, useEffect } from "react";
 import io from "socket.io-client";
 import p5 from "p5";
 
-export let mousePos;
-let socket;
-
 const DotOne = () => {
   // ————————————————————————————————————o————————————————————————————————————o useRef() -->
   // ————————————————————————————————————o useRef() —>
@@ -15,7 +12,9 @@ const DotOne = () => {
   //
   const theDot = useRef(0);
   const spreadDots = useRef(0);
-  //   let spreadDots
+
+  let r;
+  let socket;
 
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
@@ -47,36 +46,29 @@ const DotOne = () => {
     s.setup = () => {
       s.createCanvas(window.innerWidth, window.innerHeight);
       s.noStroke();
-      s.rectMode(s.CENTER);
       s.background(0);
     };
-
-    let dot;
-    let rad;
-    let externalDots;
 
     // ————————————————————————————————————o draw —>
     //
     s.draw = () => {
       if (s.mouseIsPressed === true) {
-        rad += 2;
-        theDot.current = new Dot(rad);
+        r += 2;
+        theDot.current = new Dot(r);
 
         console.log('theDot.current.red', theDot.current.red)
 
         socket.emit("add-dot", [
           theDot.current.x,
           theDot.current.y,
-          theDot.current.rad,
+          theDot.current.r,
           theDot.current.red,
           theDot.current.green,
           theDot.current.blue,
         ]);
-        // console.log("theDot.current", theDot.current);
       }
 
-    //   console.log("spreadDots", spreadDots[0], spreadDots[1]);
-      externalDots = new ExternalDot(
+      let externalDots = new ExternalDot(
         spreadDots[0],
         spreadDots[1],
         spreadDots[2],
@@ -87,38 +79,40 @@ const DotOne = () => {
     };
 
     s.mousePressed = () => {
-      rad = 20;
+      r = 20;
     };
 
     // ————————————————————————————————————o dot class —>
     //
-    let Dot = class {
-      constructor(rad) {
+    const Dot = class {
+      constructor(r) {
         this.x = s.mouseX;
         this.y = s.mouseY;
-        this.rad = rad;
+        this.r = r;
         this.red = s.random(255)
         this.green = s.random(255)
         this.blue = s.random(255)
 
         s.noStroke;
         s.fill(this.red, this.green, this.blue);
-        s.circle(this.x, this.y, this.rad);
+        s.circle(this.x, this.y, this.r);
       }
     };
 
-    let ExternalDot = class {
-      constructor(x, y, rad, red, green, blue) {
+    // ————————————————————————————————————o external dot class —>
+    //
+    const ExternalDot = class {
+      constructor(x, y, r, red, green, blue) {
         this.x = x;
         this.y = y;
-        this.rad = rad;
+        this.r = r;
         this.red = red
         this.green = green
         this.blue = blue
 
         s.noStroke;
         s.fill(this.red, this.green, this.blue);
-        s.circle(this.x, this.y, this.rad);
+        s.circle(this.x, this.y, this.r);
       }
     };
   };

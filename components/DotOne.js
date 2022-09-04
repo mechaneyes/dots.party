@@ -110,6 +110,15 @@ const DotOne = () => {
       [242, 25, 5, 98],
     ];
 
+    // https://color.adobe.com/Cold-Garden-color-theme-20547576/
+    let colColdGarden = [
+      [46, 56, 142, 95],
+      [53, 101, 242, 95],
+      [121, 217, 128, 85],
+      [177, 242, 167, 95],
+      [241, 242, 201, 95],
+    ];
+
     const Dot = class {
       constructor(r) {
         let ranColor = colUtopia[Math.floor(Math.random() * colUtopia.length)];

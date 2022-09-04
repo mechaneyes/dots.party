@@ -31,9 +31,9 @@ const DotOne = () => {
 
     socket.on("update-dot", (msg) => {
       let externalDots = msg;
-      //   console.log('externalDots.current', ...externalDots)
       spreadDots = [...externalDots];
-      //   console.log('spreadDots', spreadDots[0], spreadDots[1])
+      // console.log("spreadDots", spreadDots[0], spreadDots[1]);
+      //   console.log('externalDots.current', ...externalDots)
     });
   };
 
@@ -49,15 +49,20 @@ const DotOne = () => {
       s.background(0);
     };
 
-    // ————————————————————————————————————o draw —>
-    //
     s.draw = () => {
       if (s.mouseIsPressed === true) {
         r += 2;
         theDot.current = new Dot(r);
 
-        console.log('theDot.current.red', theDot.current.red)
+        // console.log(
+        //   "theDot",
+        //   theDot.current.red,
+        //   theDot.current.green,
+        //   theDot.current.blue
+        // );
 
+        // ————————————————————————————————————o socket.emit —>
+        //
         socket.emit("add-dot", [
           theDot.current.x,
           theDot.current.y,
@@ -65,6 +70,7 @@ const DotOne = () => {
           theDot.current.red,
           theDot.current.green,
           theDot.current.blue,
+          theDot.current.opacity,
         ]);
       }
 
@@ -74,7 +80,8 @@ const DotOne = () => {
         spreadDots[2],
         spreadDots[3],
         spreadDots[4],
-        spreadDots[5]
+        spreadDots[5],
+        spreadDots[6]
       );
     };
 
@@ -82,19 +89,40 @@ const DotOne = () => {
       r = 20;
     };
 
-    // ————————————————————————————————————o dot class —>
+    // ————————————————————————————————————o————————————————————————————————————o dots classes -->
+    // ————————————————————————————————————o dots classes —>
     //
+    // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
+    let colStadiumCar = [
+      [72, 76, 115, 98],
+      [242, 135, 68, 98],
+      [242, 238, 121, 98],
+      [242, 135, 68, 98],
+      [242, 82, 68, 98],
+    ];
+
+    // https://color.adobe.com/UTOPIA-color-theme-20547494
+    let colUtopia = [
+      [1, 22, 64, 98],
+      [4, 118, 217, 98],
+      [242, 184, 75, 98],
+      [242, 116, 5, 98],
+      [242, 25, 5, 98],
+    ];
+
     const Dot = class {
       constructor(r) {
+        let ranColor = colUtopia[Math.floor(Math.random() * colUtopia.length)];
         this.x = s.mouseX;
         this.y = s.mouseY;
         this.r = r;
-        this.red = s.random(255)
-        this.green = s.random(255)
-        this.blue = s.random(255)
+        this.red = ranColor[0];
+        this.green = ranColor[1];
+        this.blue = ranColor[2];
+        this.opacity = ranColor[3];
 
         s.noStroke;
-        s.fill(this.red, this.green, this.blue);
+        s.fill(this.red, this.green, this.blue, this.opacity);
         s.circle(this.x, this.y, this.r);
       }
     };
@@ -102,16 +130,17 @@ const DotOne = () => {
     // ————————————————————————————————————o external dot class —>
     //
     const ExternalDot = class {
-      constructor(x, y, r, red, green, blue) {
+      constructor(x, y, r, red, green, blue, opacity) {
         this.x = x;
         this.y = y;
         this.r = r;
-        this.red = red
-        this.green = green
-        this.blue = blue
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.opacity = opacity;
 
         s.noStroke;
-        s.fill(this.red, this.green, this.blue);
+        s.fill(this.red, this.green, this.blue, this.opacity);
         s.circle(this.x, this.y, this.r);
       }
     };

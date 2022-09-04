@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-const dotOne = dynamic(() => import("../components/dotOne"), {
+const DotOne = dynamic(() => import("../components/dotOne"), {
   suspense: true,
   ssr: false,
 });
@@ -9,7 +9,7 @@ const dotOne = dynamic(() => import("../components/dotOne"), {
 const Dots = () => {
   return (
     <Suspense fallback={`Loading...`}>
-      <dotOne />
+      <DotOne />
     </Suspense>
   );
 };

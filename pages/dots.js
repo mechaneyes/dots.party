@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
-const DotOne = dynamic(() => import("../components/dotOne.js"), { ssr: false });
+const dotOne = dynamic(() => import("../components/dotOne"), { ssr: false });
 
 const Dots = () => {
   return (
     <>
-      <DotOne />
+      <dotOne />
     </>
   );
 };

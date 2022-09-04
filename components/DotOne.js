@@ -40,64 +40,55 @@ const DotOne = (props) => {
   // ————————————————————————————————————o————————————————————————————————————o colors -->
   // ————————————————————————————————————o colors —>
   //
-  let colorSelect;
+  let selectedClrwy
+  (function() {
+    // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
+    const colStadiumCar = [
+      [72, 76, 115, 98],
+      [242, 135, 68, 98],
+      [242, 238, 121, 98],
+      [242, 135, 68, 98],
+      [242, 82, 68, 98],
+    ];
 
-  useEffect(() => {
-    const selectColor = async () => {
-      // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
-      const colStadiumCar = [
-        [72, 76, 115, 98],
-        [242, 135, 68, 98],
-        [242, 238, 121, 98],
-        [242, 135, 68, 98],
-        [242, 82, 68, 98],
-      ];
+    // https://color.adobe.com/UTOPIA-color-theme-20547494
+    const colUtopia = [
+      [1, 22, 64, 98],
+      [4, 118, 217, 98],
+      [242, 184, 75, 98],
+      [242, 116, 5, 98],
+      [242, 25, 5, 98],
+    ];
 
-      // https://color.adobe.com/UTOPIA-color-theme-20547494
-      const colUtopia = [
-        [1, 22, 64, 98],
-        [4, 118, 217, 98],
-        [242, 184, 75, 98],
-        [242, 116, 5, 98],
-        [242, 25, 5, 98],
-      ];
+    // https://color.adobe.com/Cold-Garden-color-theme-20547576/
+    const colColdGarden = [
+      [46, 56, 142, 95],
+      [53, 101, 242, 95],
+      [121, 217, 128, 85],
+      [177, 242, 167, 95],
+      [241, 242, 201, 95],
+    ];
 
-      // https://color.adobe.com/Cold-Garden-color-theme-20547576/
-      const colColdGarden = [
-        [46, 56, 142, 95],
-        [53, 101, 242, 95],
-        [121, 217, 128, 85],
-        [177, 242, 167, 95],
-        [241, 242, 201, 95],
-      ];
-
-      switch (props.colorway) {
-        case "colStadiumCar":
-          colorSelect = colStadiumCar;
-          console.log("colStadiumCarcolStadiumCar");
-          break;
-        case "colUtopia":
-          colorSelect = colUtopia;
-          console.log("colUtopiacolUtopia");
-          break;
-        case "colColdGarden":
-          colorSelect = colColdGarden;
-          console.log("colColdGardencolColdGarden", colorSelect);
-          break;
-      }
-
-      // ————————————————————————————————————o trigger sketch —>
-      // 
-      await new p5(Sketch)
-    };
-
-    selectColor()
-  });
+    switch (props.colorway) {
+      case "colStadiumCar":
+        selectedClrwy = colStadiumCar;
+        console.log("colStadiumCarcolStadiumCar");
+        break;
+      case "colUtopia":
+        selectedClrwy = colUtopia;
+        console.log("colUtopiacolUtopia");
+        break;
+      case "colColdGarden":
+        selectedClrwy = colColdGarden;
+        console.log("colColdGardencolColdGarden", selectedClrwy);
+        break;
+    }
+  })()
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
   //
-  // useEffect(() => new p5(Sketch), []);
+  useEffect(() => new p5(Sketch), []);
 
   const Sketch = (s) => {
     s.setup = () => {
@@ -152,7 +143,7 @@ const DotOne = (props) => {
     const Dot = class {
       constructor(r) {
         let ranColor =
-          colorSelect[Math.floor(Math.random() * colorSelect.length)];
+          selectedClrwy[Math.floor(Math.random() * selectedClrwy.length)];
         this.x = s.mouseX;
         this.y = s.mouseY;
         this.r = r;

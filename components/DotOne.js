@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import io from "socket.io-client";
 import p5 from "p5";
 
-const DotOne = () => {
+const DotOne = (props) => {
   // ————————————————————————————————————o————————————————————————————————————o useRef() -->
   // ————————————————————————————————————o useRef() —>
   //
@@ -89,11 +89,13 @@ const DotOne = () => {
       r = 20;
     };
 
-    // ————————————————————————————————————o————————————————————————————————————o dots classes -->
-    // ————————————————————————————————————o dots classes —>
+    // ————————————————————————————————————o————————————————————————————————————o colors -->
+    // ————————————————————————————————————o colors —>
     //
+    let colorSelect;
+
     // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
-    let colStadiumCar = [
+    const colStadiumCar = [
       [72, 76, 115, 98],
       [242, 135, 68, 98],
       [242, 238, 121, 98],
@@ -102,7 +104,7 @@ const DotOne = () => {
     ];
 
     // https://color.adobe.com/UTOPIA-color-theme-20547494
-    let colUtopia = [
+    const colUtopia = [
       [1, 22, 64, 98],
       [4, 118, 217, 98],
       [242, 184, 75, 98],
@@ -111,7 +113,7 @@ const DotOne = () => {
     ];
 
     // https://color.adobe.com/Cold-Garden-color-theme-20547576/
-    let colColdGarden = [
+    const colColdGarden = [
       [46, 56, 142, 95],
       [53, 101, 242, 95],
       [121, 217, 128, 85],
@@ -119,9 +121,27 @@ const DotOne = () => {
       [241, 242, 201, 95],
     ];
 
+    switch (props.colorway) {
+      case "colStadiumCar":
+        colorSelect = colStadiumCar;
+        console.log("colStadiumCarcolStadiumCar");
+        break;
+      case "colUtopia":
+        colorSelect = colUtopia;
+        console.log("colUtopiacolUtopia");
+        break;
+      case "colColdGarden":
+        colorSelect = colColdGarden;
+        console.log("colColdGardencolColdGarden", colorSelect);
+        break;
+    }
+
+    // ————————————————————————————————————o————————————————————————————————————o dots classes -->
+    // ————————————————————————————————————o dots classes —>
+    //
     const Dot = class {
       constructor(r) {
-        let ranColor = colUtopia[Math.floor(Math.random() * colUtopia.length)];
+        let ranColor = colorSelect[Math.floor(Math.random() * colorSelect.length)];
         this.x = s.mouseX;
         this.y = s.mouseY;
         this.r = r;

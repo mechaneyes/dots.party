@@ -1,0 +1,29 @@
+.navbar {
+    display: flex;
+    gap: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    // height: 50px;
+    width: 100vw;
+    padding: 5px 0 5px 10px;
+    // border-bottom: 1px solid #ff431c9c;
+    // background-color: black;
+    z-index: 2;
+
+    a {
+        text-decoration: none;
+    }
+
+    h3 {
+        display: inline;
+        font-size: 2rem;
+    }
+
+    // h3 {
+    //     display: inline;
+    //     padding: 10px;
+    //     border: 2px solid tomato;
+    //     border-radius: 50%;
+    // }
+}

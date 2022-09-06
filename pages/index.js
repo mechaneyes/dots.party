@@ -3,11 +3,11 @@ import { useState } from "react";
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
-  const [colorway, setColorway] = useState("colUtopia");
+  const [colorway, setColorway] = useState("colStadiumCar");
 
   return (
     <div className="app">
-      <div className="navbar">
+      {/* <div className="navbar">
         <button onClick={() => setColorway("colColdGarden")}>
           <h3>🍖</h3>
         </button>
@@ -17,7 +17,7 @@ export default function Home() {
         <button onClick={() => setColorway("colUtopia")}>
           <h3>🔥</h3>
         </button>
-      </div>
+      </div> */}
       <DotOne colorway={colorway} />;
     </div>
   );

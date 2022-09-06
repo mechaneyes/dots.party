@@ -41,6 +41,16 @@ const DotOne = (props) => {
   // ————————————————————————————————————o colors —>
   //
   let selectedClrwy;
+
+  // https://color.adobe.com/Cold-Garden-color-theme-20547576/
+  const colColdGarden = [
+    [46, 56, 142, 95],
+    [53, 101, 242, 95],
+    [121, 217, 128, 85],
+    [177, 242, 167, 95],
+    [241, 242, 201, 95],
+  ];
+  
   // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
   const colStadiumCar = [
     [72, 76, 115, 98],
@@ -59,16 +69,11 @@ const DotOne = (props) => {
     [242, 25, 5, 98],
   ];
 
-  // https://color.adobe.com/Cold-Garden-color-theme-20547576/
-  const colColdGarden = [
-    [46, 56, 142, 95],
-    [53, 101, 242, 95],
-    [121, 217, 128, 85],
-    [177, 242, 167, 95],
-    [241, 242, 201, 95],
-  ];
-
   switch (props.colorway) {
+    case "colColdGarden":
+      selectedClrwy = colColdGarden;
+      console.log("colColdGardencolColdGarden");
+      break;
     case "colStadiumCar":
       selectedClrwy = colStadiumCar;
       console.log("colStadiumCarcolStadiumCar");
@@ -76,10 +81,6 @@ const DotOne = (props) => {
     case "colUtopia":
       selectedClrwy = colUtopia;
       console.log("colUtopiacolUtopia");
-      break;
-    case "colColdGarden":
-      selectedClrwy = colColdGarden;
-      console.log("colColdGardencolColdGarden");
       break;
   }
 
@@ -152,6 +153,7 @@ const DotOne = (props) => {
         this.blue = ranColor[2];
         this.opacity = ranColor[3];
 
+        console.log('selectedClrwy.length', selectedClrwy.length)
         s.noStroke;
         s.fill(this.red, this.green, this.blue, this.opacity);
         s.circle(this.x, this.y, this.r);

@@ -16,12 +16,10 @@ const DotOne = (props) => {
   let r;
   let socket;
 
-  console.log("props", props);
-
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
   //
-  useEffect(() => socketInitializer(), []);
+  useEffect(() => socketInitializer(), [props]);
 
   const socketInitializer = async () => {
     await fetch("/api/socketDots");
@@ -81,14 +79,14 @@ const DotOne = (props) => {
       break;
     case "colColdGarden":
       selectedClrwy = colColdGarden;
-      console.log("colColdGardencolColdGarden", selectedClrwy);
+      console.log("colColdGardencolColdGarden");
       break;
   }
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
   //
-  useEffect(() => new p5(Sketch), []);
+  useEffect(() => new p5(Sketch), [props]);
 
   const Sketch = (s) => {
     s.setup = () => {

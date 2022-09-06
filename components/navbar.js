@@ -3,8 +3,7 @@ const Navbar = () => {
         <div className="navbar">
             <a href="/particle"><h3>🍖</h3></a>
             <a href="gyre"><h3>🏂</h3></a>
-            {/* <a href="/gyre"><h3>🔥</h3></a> */}
-            <a href="spot"><h3>💊</h3></a>
+            <a href="spot"><h3>🔥</h3></a>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import io from "socket.io-client";
 import p5 from "p5";
 
@@ -10,8 +10,9 @@ const DotOne = (props) => {
   // but should not trigger full re-rendering of the component.
   // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
   //
-  const theDot = useRef(0);
+  // const theDot = useRef(0);
   const spreadDots = useRef(0);
+  let theDot
 
   let r;
   let socket;
@@ -26,7 +27,7 @@ const DotOne = (props) => {
     socket = io();
 
     socket.on("connect", () => {
-      console.log("connected");
+      // console.log("connected");
     });
 
     socket.on("update-dot", (msg) => {
@@ -40,8 +41,6 @@ const DotOne = (props) => {
   // ————————————————————————————————————o————————————————————————————————————o colors -->
   // ————————————————————————————————————o colors —>
   //
-  let selectedClrwy;
-
   // https://color.adobe.com/Cold-Garden-color-theme-20547576/
   const colColdGarden = [
     [46, 56, 142, 95],
@@ -50,7 +49,7 @@ const DotOne = (props) => {
     [177, 242, 167, 95],
     [241, 242, 201, 95],
   ];
-  
+
   // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
   const colStadiumCar = [
     [72, 76, 115, 98],
@@ -69,25 +68,50 @@ const DotOne = (props) => {
     [242, 25, 5, 98],
   ];
 
-  switch (props.colorway) {
-    case "colColdGarden":
-      selectedClrwy = colColdGarden;
-      console.log("colColdGardencolColdGarden");
-      break;
-    case "colStadiumCar":
-      selectedClrwy = colStadiumCar;
-      console.log("colStadiumCarcolStadiumCar");
-      break;
-    case "colUtopia":
-      selectedClrwy = colUtopia;
-      console.log("colUtopiacolUtopia");
-      break;
-  }
+  const [colors, setColors] = useState(colUtopia);
+  // let colorsNoState
+
+  const refreshCols = (cols) => {
+    if (document.getElementsByTagName("canvas")) {
+      let el = document.getElementsByTagName("canvas"),
+        index;
+
+      for (index = el.length - 1; index >= 0; index--) {
+        el[index].parentNode.removeChild(el[index]);
+      }
+
+      // theDot = 0
+      // colors = colColdGarden
+      setColors(null);
+      setColors(cols);
+      
+      new p5(Sketch);
+    }
+
+    console.log(
+      "// ————————————————————————————————————o " + props.colorway + " —>"
+    );
+    console.log("// ————————————————————————————————————o —>");
+  };
+
+  useEffect(() => {
+    switch (props.colorway) {
+      case "colColdGarden":
+        refreshCols(colColdGarden);
+        break;
+      case "colStadiumCar":
+        refreshCols(colStadiumCar);
+        break;
+      case "colUtopia":
+        refreshCols(colUtopia);
+        break;
+    }
+  }, [props]);
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
   //
-  useEffect(() => new p5(Sketch), [props]);
+  useEffect(() => new p5(Sketch), []);
 
   const Sketch = (s) => {
     s.setup = () => {
@@ -101,25 +125,19 @@ const DotOne = (props) => {
     s.draw = () => {
       if (s.mouseIsPressed === true) {
         r += 2;
-        theDot.current = new Dot(r);
-
-        // console.log(
-        //   "theDot",
-        //   theDot.current.red,
-        //   theDot.current.green,
-        //   theDot.current.blue
-        // );
+        theDot = new Dot(r);
+        // console.log('theDot', theDot)
 
         // ————————————————————————————————————o socket.emit —>
         //
         socket.emit("add-dot", [
-          theDot.current.x,
-          theDot.current.y,
-          theDot.current.r,
-          theDot.current.red,
-          theDot.current.green,
-          theDot.current.blue,
-          theDot.current.opacity,
+          theDot.x,
+          theDot.y,
+          theDot.r,
+          theDot.red,
+          theDot.green,
+          theDot.blue,
+          theDot.opacity,
         ]);
       }
 
@@ -136,6 +154,7 @@ const DotOne = (props) => {
 
     s.mousePressed = () => {
       r = 20;
+      // selectedColorway = colColdGarden;
     };
 
     // ————————————————————————————————————o————————————————————————————————————o dots classes -->
@@ -143,8 +162,9 @@ const DotOne = (props) => {
     //
     const Dot = class {
       constructor(r) {
-        let ranColor =
-          selectedClrwy[Math.floor(Math.random() * selectedClrwy.length)];
+        console.log("colors", colors[0]);
+        var ranColor = colors[Math.floor(Math.random() * colors.length)];
+
         this.x = s.mouseX;
         this.y = s.mouseY;
         this.r = r;
@@ -153,7 +173,6 @@ const DotOne = (props) => {
         this.blue = ranColor[2];
         this.opacity = ranColor[3];
 
-        console.log('selectedClrwy.length', selectedClrwy.length)
         s.noStroke;
         s.fill(this.red, this.green, this.blue, this.opacity);
         s.circle(this.x, this.y, this.r);

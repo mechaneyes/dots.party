@@ -10,16 +10,16 @@ export default function Home() {
   return (
     <div className="app">
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+        async src="https://www.googletagmanager.com/gtag/js?id=G-V4X33FRRRS"
         strategy="afterInteractive"
       ></Script>
       <Script id="google-analytics" strategy="afterInteractive">
         {`
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){window.dataLayer.push(arguments);}
-        gtag('js', new Date());
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
 
-        gtag('config', 'GA_MEASUREMENT_ID');
+          gtag('config', 'G-V4X33FRRRS');
       `}
       </Script>
       <div className="navbar">

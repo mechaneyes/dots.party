@@ -1,13 +1,27 @@
-import dynamic from "next/dynamic";
+import Script from "next/script";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
-  const [enter, setEnter] = useState(true)
+  const [enter, setEnter] = useState(true);
 
   return (
     <div className="app">
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+        strategy="afterInteractive"
+      ></Script>
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){window.dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'GA_MEASUREMENT_ID');
+      `}
+      </Script>
       <div className="navbar">
         {/* <button onClick={() => setColorway("colColdGarden")}>
           <h3>🍖</h3>
@@ -19,7 +33,13 @@ export default function Home() {
           <h3>🏂</h3>
         </button> */}
       </div>
-      {enter ? <button className="enter" onClick={(() => setEnter(false))}>enter</button> : ''}
+      {enter ? (
+        <button className="enter" onClick={() => setEnter(false)}>
+          enter
+        </button>
+      ) : (
+        ""
+      )}
       <DotOne colorway={colorway} />;
     </div>
   );

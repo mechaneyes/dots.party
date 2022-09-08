@@ -4,6 +4,7 @@ const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
+  const [enter, setEnter] = useState(true)
 
   return (
     <div className="app">
@@ -18,6 +19,7 @@ export default function Home() {
           <h3>🏂</h3>
         </button> */}
       </div>
+      {enter ? <button className="enter" onClick={(() => setEnter(false))}>enter</button> : ''}
       <DotOne colorway={colorway} />;
     </div>
   );

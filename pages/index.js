@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="app">
       <div className="navbar">
-        <button onClick={() => setColorway("colColdGarden")}>
+        {/* <button onClick={() => setColorway("colColdGarden")}>
           <h3>🍖</h3>
         </button>
         <button onClick={() => setColorway("colStadiumCar")}>
@@ -16,7 +16,7 @@ export default function Home() {
         </button>
         <button onClick={() => setColorway("colUtopia")}>
           <h3>🏂</h3>
-        </button>
+        </button> */}
       </div>
       <DotOne colorway={colorway} />;
     </div>

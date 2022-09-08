@@ -17,17 +17,24 @@ canvas {
     top: 0;
 }
 
+.app {
+  width: 100vw;
+  height: 100vh;
+}
+
 .enter {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 10px 25px 13px;
-  font-size: 20px;
+  width: 150px;
+  height: 150px;
+  padding-bottom: 8px;
+  font-size: 30px;
   color: white;
   line-height: 1;
   border: 2px solid white;
-  border-radius: 23px;
-  background-color: black;
+  border-radius: 50%;
+  background-color: #F24102;
   z-index: 1;
 }

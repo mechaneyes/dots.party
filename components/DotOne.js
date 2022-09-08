@@ -68,7 +68,7 @@ const DotOne = (props) => {
     [242, 25, 5, 98],
   ];
 
-  const [colors, setColors] = useState(colColdGarden);
+  const [colors, setColors] = useState(colUtopia);
   // let colorsNoState
 
   const refreshCols = (cols) => {

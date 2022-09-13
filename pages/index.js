@@ -10,7 +10,8 @@ export default function Home() {
   return (
     <div className="app">
       <Script
-        async src="https://www.googletagmanager.com/gtag/js?id=G-V4X33FRRRS"
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-V4X33FRRRS"
         strategy="afterInteractive"
       ></Script>
       <Script id="google-analytics" strategy="afterInteractive">
@@ -34,9 +35,15 @@ export default function Home() {
         </button> */}
       </div>
       {enter ? (
-        <button className="enter" onClick={() => setEnter(false)}>
-          enter
-        </button>
+        <div className="doorbell">
+          <div className="dot dot--top-left"></div>
+          <div className="dot dot--top-right"></div>
+
+          <button className="enter" onClick={() => setEnter(false)}>
+            tap
+          </button>
+          <div className="dot dot--bottom-left"></div>
+        </div>
       ) : (
         ""
       )}

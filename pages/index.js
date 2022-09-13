@@ -34,6 +34,7 @@ export default function Home() {
           <h3>🏂</h3>
         </button> */}
       </div>
+      <p className="feedback"><a href="mailto:ray@mechaneyes.com">feedback</a></p>
       {enter ? (
         <div className="doorbell">
           <div className="dot dot--top-left"></div>

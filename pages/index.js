@@ -1,11 +1,27 @@
 import Script from "next/script";
 import { useState } from "react";
+import io from "socket.io-client";
+// import { connectCounter } from "../components/DotOne";
 import dynamic from "next/dynamic";
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
   const [enter, setEnter] = useState(true);
+  // const [painters, setPainters] = useState(1);
+
+  let socket;
+  socket = io();
+  // let numPainters = 1;
+
+  // useState(() => {
+  //   socket.on("painter-count", (msg) => {
+  //     // setPainters(msg)
+  //     numPainters = msg - 1
+  //     console.log("painter-count", numPainters);
+  //   });
+
+  // }, []);
 
   return (
     <div className="app">
@@ -34,20 +50,25 @@ export default function Home() {
           <h3>🏂</h3>
         </button> */}
       </div>
-      <p className="feedback"><a href="mailto:ray@mechaneyes.com">feedback</a></p>
+      <p className="feedback">
+        <a href="mailto:ray@mechaneyes.com">feedback</a>
+      </p>
       {enter ? (
         <div className="doorbell">
-          <div className="dot dot--top-left"></div>
-          <div className="dot dot--top-right"></div>
+          <div className="doorbell_inner">
+            <div className="dot dot--top-left"></div>
+            <div className="dot dot--top-right"></div>
 
-          <button className="enter" onClick={() => setEnter(false)}>
-            tap
-          </button>
-          <div className="dot dot--bottom-left"></div>
+            <button className="enter" onClick={() => setEnter(false)}>
+              tap
+            </button>
+            <div className="dot dot--bottom-left"></div>
+          </div>
         </div>
       ) : (
         ""
       )}
+      {/* <p className="num-painters">there {numPainters == 1 ? (`is ${numPainters} painter here`) : (`are  ${numPainters}s painter here`) }</p> */}
       <DotOne colorway={colorway} />;
     </div>
   );

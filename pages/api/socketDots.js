@@ -13,8 +13,8 @@ const SocketHandler = (req, res) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      console.log('connection success')
-      
+      console.log("connection success");
+
       socket.on("add-dot", (msg) => {
         socket.broadcast.emit("update-dot", msg);
         console.log("update-dot", msg);
@@ -23,5 +23,7 @@ const SocketHandler = (req, res) => {
   }
   res.end();
 };
+
+// export let numPainters;
 
 export default SocketHandler;

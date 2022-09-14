@@ -17,6 +17,8 @@ const DotOne = (props) => {
   let r;
   let socket;
 
+  // let numPainters
+
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
   //
@@ -28,6 +30,10 @@ const DotOne = (props) => {
 
     socket.on("connect", () => {
       // console.log("connected");
+
+      // numPainters = io.engine.clientsCount - 3;
+      // console.log("numPainters", numPainters);
+      // socket.broadcast.emit("painter-count", numPainters);
     });
 
     socket.on("update-dot", (msg) => {
@@ -198,7 +204,11 @@ const DotOne = (props) => {
     };
   };
 
-  return null;
+  return (
+    <>
+    <p>let numPainters</p>
+    </>
+  );
 };
 
 export default DotOne;

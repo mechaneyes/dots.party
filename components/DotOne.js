@@ -14,9 +14,10 @@ const DotOne = (props) => {
   const spreadDots = useRef(0);
   let theDot;
   let r;
+  
   let socket;
 
-  let numPainters;
+  const [numPainters, setNumPainters] = useState(0);
 
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
@@ -28,8 +29,8 @@ const DotOne = (props) => {
     socket = io();
 
     socket.on("update-painters", (msg) => {
-      numPainters = msg;
-      console.log('numPainters', numPainters)
+      setNumPainters(msg);
+      console.log('numPainters', msg)
     });
 
     socket.on("update-dot", (msg) => {
@@ -202,7 +203,7 @@ const DotOne = (props) => {
 
   return (
     <>
-      <p>{numPainters}</p>
+      <p className="num-painters">{numPainters <= 1 ? '1 Painter Present' : numPainters + ' Painters Present'}</p>
     </>
   );
 };

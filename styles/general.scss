@@ -40,21 +40,27 @@ canvas {
 }
 
 .doorbell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
 }
 
 .doorbell_inner {
-  width: auto;
-  height: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .enter {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   width: 150px;
   height: 150px;
-  padding-bottom: 8px;
-  font-size: 30px;
+  padding: 25px 0 30px;
+  font-size: 26px;
   color: white;
   line-height: 1;
   // border: 2px solid white;

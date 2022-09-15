@@ -12,12 +12,11 @@ const DotOne = (props) => {
   //
   // const theDot = useRef(0);
   const spreadDots = useRef(0);
-  let theDot
-
+  let theDot;
   let r;
   let socket;
 
-  // let numPainters
+  let numPainters;
 
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
@@ -28,12 +27,9 @@ const DotOne = (props) => {
     await fetch("/api/socketDots");
     socket = io();
 
-    socket.on("connect", () => {
-      // console.log("connected");
-
-      // numPainters = io.engine.clientsCount - 3;
-      // console.log("numPainters", numPainters);
-      // socket.broadcast.emit("painter-count", numPainters);
+    socket.on("update-painters", (msg) => {
+      numPainters = msg;
+      console.log('numPainters', numPainters)
     });
 
     socket.on("update-dot", (msg) => {
@@ -90,7 +86,7 @@ const DotOne = (props) => {
       // colors = colColdGarden
       setColors(null);
       setColors(cols);
-      
+
       new p5(Sketch);
     }
 
@@ -206,7 +202,7 @@ const DotOne = (props) => {
 
   return (
     <>
-    <p>let numPainters</p>
+      <p>{numPainters}</p>
     </>
   );
 };

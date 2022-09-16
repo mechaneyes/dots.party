@@ -1,11 +1,11 @@
 import Script from "next/script";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+const Splash = dynamic(() => import("../components/Splash"), { ssr: false });
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
-  const [firstLoad, setFirstLoad] = useState(true);
 
   return (
     <div className="app">
@@ -37,22 +37,8 @@ export default function Home() {
       <p className="feedback">
         <a href="mailto:ray@mechaneyes.com">feedback</a>
       </p>
-      {firstLoad ? (
-        <div className="doorbell">
-          <div className="doorbell_inner">
-            <div className="dot dot--top-left"></div>
-            <div className="dot dot--top-right"></div>
-
-            <button className="enter" onClick={() => setFirstLoad(false)}>
-              tap
-            </button>
-            <div className="dot dot--bottom-left"></div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-      <DotOne colorway={colorway} />;
+      <Splash />
+      <DotOne colorway={colorway} />
     </div>
   );
 }

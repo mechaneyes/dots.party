@@ -11,19 +11,19 @@ export default function Home() {
 
   // Hide splash page when clicking on canvas
   // 
-  useEffect(() => {
-    setTimeout(() => {
-      const allWithClass = Array.from(
-        document.getElementsByClassName("p5Canvas")
-      );
-      allWithClass.forEach((can) => {
-        can.addEventListener("mousedown", function() {
-          console.log('can')
-          setDbHidden(true)
-        });
-      })
-    }, 400);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const allWithClass = Array.from(
+  //       document.getElementsByClassName("p5Canvas")
+  //     );
+  //     allWithClass.forEach((can) => {
+  //       can.addEventListener("mousedown", function() {
+  //         console.log('can')
+  //         setDbHidden(true)
+  //       });
+  //     })
+  //   }, 400);
+  // }, []);
 
   return (
     <div className="app">

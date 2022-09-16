@@ -120,4 +120,8 @@ canvas {
   font-weight: 300;
   text-align: center;
   z-index: 1;
+
+  &--test {
+    bottom: 30px;
+  }
 }

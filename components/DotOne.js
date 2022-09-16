@@ -12,10 +12,18 @@ const DotOne = (props) => {
   //
   // const theDot = useRef(0);
   const spreadDots = useRef(0);
-  let theDot
-
+  let theDot;
   let r;
+
   let socket;
+
+  const [numPainters, setNumPainters] = useState(0);
+
+  const firstNum = (firstNum) => {
+    setTimeout(() => {
+      setNumPainters(firstNum);
+    }, 400)
+  }
 
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
@@ -26,8 +34,14 @@ const DotOne = (props) => {
     await fetch("/api/socketDots");
     socket = io();
 
-    socket.on("connect", () => {
-      // console.log("connected");
+    socket.on("update-painters", (msg) => {
+      setNumPainters(msg);
+      // firstNum(msg)
+      console.log("numPainters", msg);
+    });
+
+    socket.on("first-load", (msg) => {
+      firstNum(msg)
     });
 
     socket.on("update-dot", (msg) => {
@@ -84,7 +98,7 @@ const DotOne = (props) => {
       // colors = colColdGarden
       setColors(null);
       setColors(cols);
-      
+
       new p5(Sketch);
     }
 
@@ -198,7 +212,15 @@ const DotOne = (props) => {
     };
   };
 
-  return null;
+  return (
+    <>
+      <p className="num-painters">
+        {numPainters <= 1
+          ? "1 Painter Present"
+          : numPainters + " Painters Present"}
+      </p>
+    </>
+  );
 };
 
 export default DotOne;

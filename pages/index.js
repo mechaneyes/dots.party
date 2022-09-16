@@ -1,6 +1,7 @@
 import Script from "next/script";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+const Splash = dynamic(() => import("../components/Splash"), { ssr: false });
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
@@ -54,23 +55,8 @@ export default function Home() {
       <p className="feedback">
         <a href="mailto:ray@mechaneyes.com">feedback</a>
       </p>
-      {!dbHidden ? (
-        <div className="doorbell" onClick={() => setDbHidden(true)}>
-          <div className="doorbell_inner">
-            <div className="dot dot--top-left"></div>
-            <div className="dot dot--top-right"></div>
-
-            <button className="enter">
-              <div>tap</div> <div>tap</div> <div>tap</div>
-            </button>
-            <div className="dot dot--bottom-left"></div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {/* <p className="num-painters">there {numPainters == 1 ? (`is ${numPainters} painter here`) : (`are  ${numPainters}s painter here`) }</p> */}
-      <DotOne colorway={colorway} />;
+      <Splash />
+      <DotOne colorway={colorway} />
     </div>
   );
 }

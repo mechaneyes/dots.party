@@ -216,8 +216,8 @@ const DotOne = (props) => {
     <>
       <p className="num-painters">
         {numPainters <= 1
-          ? "1 Painter Present"
-          : numPainters + " Painters Present"}
+          ? "1 Painter Onlline"
+          : numPainters + " Painters Onlline"}
       </p>
     </>
   );

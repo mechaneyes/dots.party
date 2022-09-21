@@ -12,7 +12,7 @@ const Splash = () => {
             <div className="dot dot--top-right"></div>
 
             <button className="enter" onClick={() => setFirstLoad(false)}>
-              tap
+              tap + tap some more
             </button>
             <div className="dot dot--bottom-left"></div>
           </div>

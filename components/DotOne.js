@@ -176,7 +176,7 @@ const DotOne = (props) => {
     //
     const Dot = class {
       constructor(r) {
-        console.log("colors", colors[0]);
+        // console.log("colors", colors[0]);
         var ranColor = colors[Math.floor(Math.random() * colors.length)];
 
         this.x = s.mouseX;

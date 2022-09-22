@@ -1,7 +1,6 @@
 import Script from "next/script";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-const Splash = dynamic(() => import("../components/Splash"), { ssr: false });
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
@@ -55,7 +54,6 @@ export default function Home() {
       <p className="feedback">
         <a href="mailto:ray@mechaneyes.com">feedback</a>
       </p>
-      <Splash />
       <DotOne colorway={colorway} />
     </div>
   );

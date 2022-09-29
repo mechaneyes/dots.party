@@ -3,14 +3,6 @@ import io from "socket.io-client";
 import p5 from "p5";
 
 const DotOne = (props) => {
-  // ————————————————————————————————————o————————————————————————————————————o useRef() -->
-  // ————————————————————————————————————o useRef() —>
-  //
-  // a state that should change as frequently as possible
-  // but should not trigger full re-rendering of the component.
-  // https://www.smashingmagazine.com/2020/11/react-useref-hook/#about-useref-hook
-  //
-  // const theDot = useRef(0);
   const spreadDots = useRef(0);
   let theDot;
   let r;
@@ -19,11 +11,11 @@ const DotOne = (props) => {
 
   const [numPainters, setNumPainters] = useState(0);
 
-  const firstNum = (firstNum) => {
+  const numPaintersOnLoad = (numPaintersOnLoad) => {
     setTimeout(() => {
-      setNumPainters(firstNum);
-    }, 400)
-  }
+      setNumPainters(numPaintersOnLoad);
+    }, 400);
+  };
 
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
@@ -36,19 +28,15 @@ const DotOne = (props) => {
 
     socket.on("update-painters", (msg) => {
       setNumPainters(msg);
-      // firstNum(msg)
-      console.log("numPainters", msg);
     });
 
     socket.on("first-load", (msg) => {
-      firstNum(msg)
+      numPaintersOnLoad(msg);
     });
 
     socket.on("update-dot", (msg) => {
       let externalDots = msg;
       spreadDots = [...externalDots];
-      // console.log("spreadDots", spreadDots[0], spreadDots[1]);
-      // console.log('externalDots.current', ...externalDots)
     });
   };
 
@@ -56,7 +44,7 @@ const DotOne = (props) => {
   // ————————————————————————————————————o colors —>
   //
   // https://color.adobe.com/Cold-Garden-color-theme-20547576/
-  const colColdGarden = [
+  const colorColdGarden = [
     [46, 56, 142, 95],
     [53, 101, 242, 95],
     [121, 217, 128, 85],
@@ -65,7 +53,7 @@ const DotOne = (props) => {
   ];
 
   // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
-  const colStadiumCar = [
+  const colorStadiumCar = [
     [72, 76, 115, 98],
     [242, 135, 68, 98],
     [242, 238, 121, 98],
@@ -74,7 +62,7 @@ const DotOne = (props) => {
   ];
 
   // https://color.adobe.com/UTOPIA-color-theme-20547494
-  const colUtopia = [
+  const colorUtopia = [
     [1, 22, 64, 98],
     [4, 118, 217, 98],
     [242, 184, 75, 98],
@@ -82,10 +70,13 @@ const DotOne = (props) => {
     [242, 25, 5, 98],
   ];
 
-  const [colors, setColors] = useState(colUtopia);
-  // let colorsNoState
+  // ————————————————————————————————————o color changes —>
+  // state being set in function to enable resetting of 
+  // the p5 sketch when the colorway changes
+  //
+  const [colors, setColors] = useState(colorUtopia);
 
-  const refreshCols = (cols) => {
+  const changeColors = (cols) => {
     if (document.getElementsByTagName("canvas")) {
       let el = document.getElementsByTagName("canvas"),
         index;
@@ -94,9 +85,6 @@ const DotOne = (props) => {
         el[index].parentNode.removeChild(el[index]);
       }
 
-      // theDot = 0
-      // colors = colColdGarden
-      setColors(null);
       setColors(cols);
 
       new p5(Sketch);
@@ -105,19 +93,18 @@ const DotOne = (props) => {
     console.log(
       "// ————————————————————————————————————o " + props.colorway + " —>"
     );
-    console.log("// ————————————————————————————————————o —>");
   };
 
   useEffect(() => {
     switch (props.colorway) {
-      case "colColdGarden":
-        refreshCols(colColdGarden);
+      case "colorColdGarden":
+        changeColors(colorColdGarden);
         break;
-      case "colStadiumCar":
-        refreshCols(colStadiumCar);
+      case "colorStadiumCar":
+        changeColors(colorStadiumCar);
         break;
-      case "colUtopia":
-        refreshCols(colUtopia);
+      case "colorUtopia":
+        changeColors(colorUtopia);
         break;
     }
   }, [props]);
@@ -168,7 +155,6 @@ const DotOne = (props) => {
 
     s.mousePressed = () => {
       r = 20;
-      // selectedColorway = colColdGarden;
     };
 
     // ————————————————————————————————————o————————————————————————————————————o dots classes -->
@@ -176,7 +162,7 @@ const DotOne = (props) => {
     //
     const Dot = class {
       constructor(r) {
-        // console.log("colors", colors[0]);
+        console.log("colors", colors[0]);
         var ranColor = colors[Math.floor(Math.random() * colors.length)];
 
         this.x = s.mouseX;

@@ -7,9 +7,8 @@ export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
   const [dbHidden, setDbHidden] = useState(false);
 
-
   // Hide splash page when clicking on canvas
-  // 
+  //
   // useEffect(() => {
   //   setTimeout(() => {
   //     const allWithClass = Array.from(
@@ -41,15 +40,15 @@ export default function Home() {
       `}
       </Script>
       <div className="navbar">
-        {/* <button onClick={() => setColorway("colColdGarden")}>
+        <button onClick={() => setColorway("colorColdGarden")}>
           <h3>🍖</h3>
         </button>
-        <button onClick={() => setColorway("colStadiumCar")}>
+        <button onClick={() => setColorway("colorStadiumCar")}>
           <h3>🪬</h3>
         </button>
-        <button onClick={() => setColorway("colUtopia")}>
+        <button onClick={() => setColorway("colorUtopia")}>
           <h3>🏂</h3>
-        </button> */}
+        </button>
       </div>
       <p className="feedback">
         <a href="mailto:ray@mechaneyes.com">feedback</a>

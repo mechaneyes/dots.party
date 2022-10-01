@@ -44,7 +44,7 @@ const DotOne = (props) => {
   // ————————————————————————————————————o colors —>
   //
   // https://color.adobe.com/Cold-Garden-color-theme-20547576/
-  const colorColdGarden = [
+  const colorwayGarden = [
     [46, 56, 142, 95],
     [53, 101, 242, 95],
     [121, 217, 128, 85],
@@ -53,7 +53,7 @@ const DotOne = (props) => {
   ];
 
   // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
-  const colorStadiumCar = [
+  const colorwayStadium = [
     [72, 76, 115, 98],
     [242, 135, 68, 98],
     [242, 238, 121, 98],
@@ -62,7 +62,7 @@ const DotOne = (props) => {
   ];
 
   // https://color.adobe.com/UTOPIA-color-theme-20547494
-  const colorUtopia = [
+  const colorwayUtopia = [
     [1, 22, 64, 98],
     [4, 118, 217, 98],
     [242, 184, 75, 98],
@@ -71,12 +71,12 @@ const DotOne = (props) => {
   ];
 
   // ————————————————————————————————————o color changes —>
-  // state being set in function to enable resetting of 
+  // state being set in function to enable resetting of
   // the p5 sketch when the colorway changes
   //
-  const [colors, setColors] = useState(colorUtopia);
+  const [colors, setColors] = useState(colorwayUtopia);
 
-  const changeColors = (cols) => {
+  const refreshColors = (cols) => {
     if (document.getElementsByTagName("canvas")) {
       let el = document.getElementsByTagName("canvas"),
         index;
@@ -85,34 +85,46 @@ const DotOne = (props) => {
         el[index].parentNode.removeChild(el[index]);
       }
 
-      setColors(cols);
-
-      new p5(Sketch);
+      // new p5(Sketch);
     }
+
+    setColors(cols);
 
     console.log(
       "// ————————————————————————————————————o " + props.colorway + " —>"
     );
   };
 
+  let rando = colors;
+  let randChange = false
+
   useEffect(() => {
+    rando = colors;
+    console.log("rando", rando[0]);
+    console.log('randChange', randChange)
+  }, [colors]);
+
+  useEffect(() => {
+    randChange = true
+    
     switch (props.colorway) {
-      case "colorColdGarden":
-        changeColors(colorColdGarden);
+      case "colorwayGarden":
+        refreshColors(colorwayGarden);
         break;
-      case "colorStadiumCar":
-        changeColors(colorStadiumCar);
+      case "colorwayStadium":
+        refreshColors(colorwayStadium);
         break;
-      case "colorUtopia":
-        changeColors(colorUtopia);
+      case "colorwayUtopia":
+        refreshColors(colorwayUtopia);
         break;
     }
-  }, [props]);
+  }, [props.colorway]);
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
   //
-  useEffect(() => new p5(Sketch), []);
+  let sketcher;
+  useEffect(() => (sketcher = new p5(Sketch)), []);
 
   const Sketch = (s) => {
     s.setup = () => {
@@ -157,13 +169,40 @@ const DotOne = (props) => {
       r = 20;
     };
 
+    const resetSketch = () => {
+      const Dot = class {
+        constructor(r) {
+          console.log('// ————————————————————————————————————o reset —>')
+          console.log("rando", rando[0]);
+
+          let ranColor = colors[Math.floor(Math.random() * colors.length)];
+  
+          this.x = s.mouseX;
+          this.y = s.mouseY;
+          this.r = r;
+          this.red = ranColor[0];
+          this.green = ranColor[1];
+          this.blue = ranColor[2];
+          this.opacity = ranColor[3];
+  
+          s.noStroke;
+          s.fill(this.red, this.green, this.blue, this.opacity);
+          s.circle(this.x, this.y, this.r);
+        }
+      };
+    };
+
+    if (randChange === true) {
+      console.log('randChange flipped', randChange)
+    }
+
     // ————————————————————————————————————o————————————————————————————————————o dots classes -->
     // ————————————————————————————————————o dots classes —>
     //
     const Dot = class {
       constructor(r) {
-        console.log("colors", colors[0]);
-        var ranColor = colors[Math.floor(Math.random() * colors.length)];
+        console.log("rando", rando[0]);
+        let ranColor = colors[Math.floor(Math.random() * colors.length)];
 
         this.x = s.mouseX;
         this.y = s.mouseY;

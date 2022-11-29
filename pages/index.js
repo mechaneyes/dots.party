@@ -20,7 +20,7 @@ export default function Home() {
         <meta name="description" content="Hoo Gots the Dots?" />
         <meta property="og:url" content="https://dots.party/" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Dots Dot Party" />
+        <meta property="og:title" content="Dots.Party" />
         <meta property="og:description" content="Hoo Gots the Dots?" />
         <meta
           property="og:image"

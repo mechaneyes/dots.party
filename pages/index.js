@@ -24,7 +24,7 @@ export default function Home() {
         <meta property="og:description" content="Hoo Gots the Dots?" />
         <meta
           property="og:image"
-          content="https://i.pinimg.com/originals/53/bf/0c/53bf0cb9dc37ae1e223dac5eb1c0519a.jpg"
+          content="https://dots.party/images/dots-dot-party-1.1.0.jpg"
         />
       </Head>
       <div className="app">

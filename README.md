@@ -2,6 +2,8 @@
 
 ### https://dots.party/
 
+![dots.party screenshot](public/images/dots-dot-party-1.0.0.jpg)
+
 dots.party is a collaborative drawing application. Users connect to a shared canvas via websockets where they place primitive shapes (currently circles) on that canvas. A circle placed on one user's screen immediately shows up on all users' screens.
 
 The original dates back to 2015 when I installed it at the TBD music festival in Sacramento. I've dusted this off and updated it, breaking it out at various times in various settings.

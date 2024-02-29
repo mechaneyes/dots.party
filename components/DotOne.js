@@ -90,9 +90,9 @@ const DotOne = (props) => {
 
     setColors(cols);
 
-    console.log(
-      "// ————————————————————————————————————o " + props.colorway + " —>"
-    );
+    // console.log(
+    //   "// ————————————————————————————————————o " + props.colorway + " —>"
+    // );
   };
 
   let rando = colors;
@@ -100,8 +100,8 @@ const DotOne = (props) => {
 
   useEffect(() => {
     rando = colors;
-    console.log("rando", rando[0]);
-    console.log('randChange', randChange)
+    // console.log("rando", rando[0]);
+    // console.log('randChange', randChange)
   }, [colors]);
 
   useEffect(() => {
@@ -128,7 +128,8 @@ const DotOne = (props) => {
 
   const Sketch = (s) => {
     s.setup = () => {
-      s.createCanvas(window.innerWidth, window.innerHeight);
+      // s.createCanvas(window.innerWidth, window.innerHeight);
+      s.createCanvas(453, 982);
       s.noStroke();
       s.background(0);
     };
@@ -172,8 +173,8 @@ const DotOne = (props) => {
     const resetSketch = () => {
       const Dot = class {
         constructor(r) {
-          console.log('// ————————————————————————————————————o reset —>')
-          console.log("rando", rando[0]);
+          // console.log('// ————————————————————————————————————o reset —>')
+          // console.log("rando", rando[0]);
 
           let ranColor = colors[Math.floor(Math.random() * colors.length)];
   
@@ -193,7 +194,7 @@ const DotOne = (props) => {
     };
 
     if (randChange === true) {
-      console.log('randChange flipped', randChange)
+      // console.log('randChange flipped', randChange)
     }
 
     // ————————————————————————————————————o————————————————————————————————————o dots classes -->
@@ -201,7 +202,7 @@ const DotOne = (props) => {
     //
     const Dot = class {
       constructor(r) {
-        console.log("rando", rando[0]);
+        // console.log("rando", rando[0]);
         let ranColor = colors[Math.floor(Math.random() * colors.length)];
 
         this.x = s.mouseX;
@@ -239,10 +240,10 @@ const DotOne = (props) => {
 
   return (
     <>
-      <p className="num-painters">
+      <p className="num-collaborators">
         {numPainters <= 1
-          ? "1 Painter Onlline"
-          : numPainters + " Painters Onlline"}
+          ? "1 Collaborator Onlline"
+          : numPainters + " Collaborators Onlline"}
       </p>
     </>
   );

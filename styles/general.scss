@@ -17,8 +17,11 @@ body {
 }
 
 canvas {
-    position: fixed;
-    top: 0;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 
 .app {
@@ -31,7 +34,8 @@ canvas {
   top: 10px;
   right: 15px;
   margin: 0;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-size: 16px;
   font-weight: 300;
   border-bottom: 1px solid white;
@@ -64,7 +68,8 @@ canvas {
   width: 150px;
   height: 150px;
   padding: 25px 10px 30px;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
   font-size: 22px;
   color: white;
@@ -112,15 +117,47 @@ canvas {
   }
 }
 
-.num-painters {
+.num-collaborators {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   width: 100%;
   margin: 0;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-size: 16px;
   color: white;
   font-weight: 300;
   text-align: center;
   z-index: 1;
+}
+
+.app--qr {
+  position: relative;
+  aspect-ratio: 19.5 / 9;
+  background-color: gray;
+
+  > span {
+    position: relative;
+    width: 453px !important;
+    height: 981px !important;
+    aspect-ratio: 19.5 / 9;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .qr-code {
+    position: absolute;
+    top: auto !important;
+    left: auto !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    width: 200px !important;
+    min-width: auto !important;
+    max-width: auto !important;
+    height: 200px !important;
+    min-height: auto !important;
+    max-height: auto !important;
+    z-index: 2;
+  }
 }

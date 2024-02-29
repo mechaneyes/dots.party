@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "fs": "^0.0.1-security",
+    "jotai": "^2.7.0",
     "net": "^1.0.2",
     "next": "12",
     "p5": "^1.4.2",

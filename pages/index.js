@@ -1,17 +1,37 @@
 import Script from "next/script";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useAtom } from "jotai";
+import { qrAtom } from "../abstracts/jotaiAtoms";
 
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
+import Splash from "../components/Splash";
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
+  const [qr, setQr] = useAtom(qrAtom);
+  const [showSplash, setShowSplash] = useState(true);
+
+  let splashScreen = showSplash ? <Splash /> : null;
 
   const colorHandler = (colorClicked) => {
     setColorway(colorClicked);
     // console.log('colorClicked', colorClicked)
   };
+
+  useEffect(() => {
+    const handleClick = () => {
+      setShowSplash(false);
+    };
+
+    document.addEventListener('click', handleClick);
+
+    // Cleanup function
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
 
   return (
     <>
@@ -54,6 +74,8 @@ export default function Home() {
           <h3>🏂</h3>
         </button>
       </div> */}
+        {splashScreen}
+        <div id="canvas-holder"></div>
         <p className="feedback">
           <a href="mailto:ray@mechaneyes.com">feedback</a>
         </p>

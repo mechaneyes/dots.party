@@ -1,6 +1,9 @@
 @use "navbar.scss";
 @use "footer.scss";
 
+$helvetica: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+
 html,
 body {
   overscroll-behavior-y: none;
@@ -19,7 +22,7 @@ body {
   width: auto;
   height: 100vh;
   aspect-ratio: 9 / 19.5;
-  
+
   * {
     user-select: none;
   }
@@ -31,24 +34,19 @@ body {
 }
 
 main {
-  display: block;
-  position: relative;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 #canvas-holder {
   width: 100%;
   height: 100%;
-  // z-index: 1;
-
 }
 
 canvas {
   position: fixed;
   top: 0;
-  // left: 50%;
-  // transform: translateX(-50%);
   z-index: 1;
 }
 
@@ -59,16 +57,6 @@ canvas {
   height: 100%;
   pointer-events: none;
   z-index: 0;
-
-  > span {
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 1;
-    pointer-events: none;
-  }
 }
 
 .feedback {
@@ -76,8 +64,7 @@ canvas {
   top: 10px;
   right: 15px;
   margin: 0;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: $helvetica;
   font-size: 16px;
   font-weight: 300;
   border-bottom: 1px solid white;
@@ -95,11 +82,12 @@ canvas {
   align-items: center;
   position: absolute;
   top: 0;
-  width: auto;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   left: 50%;
   transform: translateX(-50%);
   aspect-ratio: 9 / 19.5;
+  z-index: 2;
 }
 
 .doorbell_inner {
@@ -115,8 +103,7 @@ canvas {
   width: 150px;
   height: 150px;
   padding: 25px 10px 30px;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: $helvetica;
   font-weight: 300;
   font-size: 22px;
   color: white;
@@ -169,8 +156,7 @@ canvas {
   bottom: 20px;
   width: 100%;
   margin: 0;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: $helvetica;
   font-size: 16px;
   color: white;
   font-weight: 300;

@@ -3,23 +3,16 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
-import { useAtom } from "jotai";
-import { qrAtom } from "../abstracts/jotaiAtoms";
 
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
-  const [qr, setQr] = useAtom(qrAtom);
 
   const colorHandler = (colorClicked) => {
     setColorway(colorClicked);
     // console.log('colorClicked', colorClicked)
   };
-
-  useEffect(() => {
-    setQr(true);
-  }, []);
 
   return (
     <>
@@ -43,7 +36,6 @@ export default function Home() {
           className="qr-code"
           width={300}
           height={300}
-          layout="raw" 
         />
         <p className="feedback">
           <a href="mailto:ray@mechaneyes.com">feedback</a>

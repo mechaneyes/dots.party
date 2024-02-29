@@ -3,42 +3,55 @@ import io from "socket.io-client";
 import p5 from "p5";
 
 const DotOne = (props) => {
+  const [numPaintersOnLoad, setNumPaintersOnLoad] = useState(0);
+  const [numPainters, setNumPainters] = useState(0);
+
   let spreadDots = useRef(0);
+
   let theDot;
   let r;
 
   let socket;
 
-  const [numPainters, setNumPainters] = useState(0);
-
-  const numPaintersOnLoad = (numPaintersOnLoad) => {
-    setTimeout(() => {
-      setNumPainters(numPaintersOnLoad);
-    }, 400);
-  };
-
   // ————————————————————————————————————o————————————————————————————————————o socket.io -->
   // ————————————————————————————————————o socket.io —>
   //
-  useEffect(() => socketInitializer(), [props]);
+
+  useEffect(() => {
+    socketInitializer();
+  }, []);
 
   const socketInitializer = async () => {
-    await fetch("/api/socketDots");
-    socket = io();
+    try {
+      await fetch("/api/socketDots");
 
-    socket.on("update-painters", (msg) => {
-      setNumPainters(msg);
-    });
+      socket = io(); // Connect only after fetch resolves
 
-    socket.on("first-load", (msg) => {
-      numPaintersOnLoad(msg);
-    });
+      socket.on("update-painters", (msg) => {
+        setNumPainters(msg);
+      });
 
-    socket.on("update-dot", (msg) => {
-      let externalDots = msg;
-      spreadDots = [...externalDots];
-    });
+      socket.on("first-load", (msg) => {
+        setNumPaintersOnLoad(msg);
+      });
+
+      socket.on("update-dot", (msg) => {
+        let externalDots = msg;
+        spreadDots = [...externalDots];
+      });
+
+      // Add cleanup function
+      return () => {
+        socket.disconnect();
+      };
+    } catch (error) {
+      console.error("Error initializing socket:", error);
+    }
   };
+
+  useEffect(() => {
+    setNumPainters(numPaintersOnLoad);
+  }, [numPaintersOnLoad]);
 
   // ————————————————————————————————————o————————————————————————————————————o colors -->
   // ————————————————————————————————————o colors —>
@@ -96,7 +109,7 @@ const DotOne = (props) => {
   // };
 
   let rando = colors;
-  let randChange = false
+  let randChange = false;
 
   useEffect(() => {
     rando = colors;
@@ -105,8 +118,8 @@ const DotOne = (props) => {
   }, [colors]);
 
   useEffect(() => {
-    randChange = true
-    
+    randChange = true;
+
     switch (props.colorway) {
       case "colorwayGarden":
         refreshColors(colorwayGarden);
@@ -128,12 +141,12 @@ const DotOne = (props) => {
 
   const Sketch = (s) => {
     s.setup = () => {
-      const canvasDiv = document.getElementById('canvas-holder');
+      const canvasDiv = document.getElementById("canvas-holder");
       const width = canvasDiv.offsetWidth;
       const height = canvasDiv.offsetHeight;
 
       const canvas = s.createCanvas(width, height);
-      canvas.parent('canvas-holder');
+      canvas.parent("canvas-holder");
       s.noStroke();
       s.background(0);
     };
@@ -181,7 +194,7 @@ const DotOne = (props) => {
           // console.log("rando", rando[0]);
 
           let ranColor = colors[Math.floor(Math.random() * colors.length)];
-  
+
           this.x = s.mouseX;
           this.y = s.mouseY;
           this.r = r;
@@ -189,7 +202,7 @@ const DotOne = (props) => {
           this.green = ranColor[1];
           this.blue = ranColor[2];
           this.opacity = ranColor[3];
-  
+
           s.noStroke;
           s.fill(this.red, this.green, this.blue, this.opacity);
           s.circle(this.x, this.y, this.r);

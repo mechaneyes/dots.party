@@ -8,6 +8,7 @@ The original dates back to 2015 when I installed it at the TBD music festival in
 
 In the context of events, I typically project a browser screen with dots.party running. People hit a QR code to connect to the app then start interacting with what's on the projector screen and the screens of everybody playing with them.
 
+<br>
 
 ## Tools and Technologies
 

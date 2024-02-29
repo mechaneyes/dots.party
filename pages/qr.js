@@ -36,12 +36,14 @@ export default function Home() {
         />
       </Head>
       <div className="app app--qr">
+        <div id="canvas-holder"></div>
         <Image
-            src="/images/dots.party-qr.gif"
-            alt="qr code linking to https://dots.party"
-            className="qr-code"
-            width={300}
-            height={300}
+          src="/images/dots.party-qr.gif"
+          alt="qr code linking to https://dots.party"
+          className="qr-code"
+          width={300}
+          height={300}
+          layout="raw" 
         />
         <p className="feedback">
           <a href="mailto:ray@mechaneyes.com">feedback</a>

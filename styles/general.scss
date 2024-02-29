@@ -8,25 +8,67 @@ body {
   background-color: black;
 }
 
-body {
-  margin: 0;
+html {
+  display: flex;
+  justify-content: center;
+}
 
+body {
+  position: relative;
+  margin: 0;
+  width: auto;
+  height: 100vh;
+  aspect-ratio: 9 / 19.5;
+  
   * {
     user-select: none;
   }
 }
 
+#__next {
+  width: 100%;
+  height: 100%;
+}
+
+main {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#canvas-holder {
+  width: 100%;
+  height: 100%;
+  // z-index: 1;
+
+}
+
 canvas {
   position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 0;
+  // left: 50%;
+  // transform: translateX(-50%);
+  z-index: 1;
 }
 
 .app {
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+
+  > span {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1;
+    pointer-events: none;
+  }
 }
 
 .feedback {
@@ -51,13 +93,18 @@ canvas {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  position: absolute;
+  top: 0;
+  width: auto;
   height: 100vh;
+  left: 50%;
+  transform: translateX(-50%);
+  aspect-ratio: 9 / 19.5;
 }
 
 .doorbell_inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .enter {
@@ -133,24 +180,12 @@ canvas {
 
 .app--qr {
   position: relative;
-  aspect-ratio: 19.5 / 9;
-  background-color: gray;
-
-  > span {
-    position: relative;
-    width: 453px !important;
-    height: 981px !important;
-    aspect-ratio: 19.5 / 9;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-  }
 
   .qr-code {
     position: absolute;
     top: auto !important;
     left: auto !important;
-    bottom: 10px !important;
+    bottom: 20px !important;
     right: 10px !important;
     width: 200px !important;
     min-width: auto !important;
@@ -159,5 +194,15 @@ canvas {
     min-height: auto !important;
     max-height: auto !important;
     z-index: 2;
+    pointer-events: none;
+  }
+
+  .feedback {
+    display: none;
+  }
+
+  .num-collaborators {
+    text-align: left;
+    padding-left: 10px;
   }
 }

@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import p5 from "p5";
 
 const DotOne = (props) => {
-  const spreadDots = useRef(0);
+  let spreadDots = useRef(0);
   let theDot;
   let r;
 
@@ -76,24 +76,24 @@ const DotOne = (props) => {
   //
   const [colors, setColors] = useState(colorwayUtopia);
 
-  const refreshColors = (cols) => {
-    if (document.getElementsByTagName("canvas")) {
-      let el = document.getElementsByTagName("canvas"),
-        index;
+  // const refreshColors = (cols) => {
+  //   if (document.getElementsByTagName("canvas")) {
+  //     let el = document.getElementsByTagName("canvas"),
+  //       index;
 
-      for (index = el.length - 1; index >= 0; index--) {
-        el[index].parentNode.removeChild(el[index]);
-      }
+  //     for (index = el.length - 1; index >= 0; index--) {
+  //       el[index].parentNode.removeChild(el[index]);
+  //     }
 
-      // new p5(Sketch);
-    }
+  //     // new p5(Sketch);
+  //   }
 
-    setColors(cols);
+  //   setColors(cols);
 
-    // console.log(
-    //   "// ————————————————————————————————————o " + props.colorway + " —>"
-    // );
-  };
+  //   // console.log(
+  //   //   "// ————————————————————————————————————o " + props.colorway + " —>"
+  //   // );
+  // };
 
   let rando = colors;
   let randChange = false
@@ -128,8 +128,12 @@ const DotOne = (props) => {
 
   const Sketch = (s) => {
     s.setup = () => {
-      // s.createCanvas(window.innerWidth, window.innerHeight);
-      s.createCanvas(453, 982);
+      const canvasDiv = document.getElementById('canvas-holder');
+      const width = canvasDiv.offsetWidth;
+      const height = canvasDiv.offsetHeight;
+
+      const canvas = s.createCanvas(width, height);
+      canvas.parent('canvas-holder');
       s.noStroke();
       s.background(0);
     };

@@ -7,13 +7,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "eslint-config-next": "^14.1.0",
     "fs": "^0.0.1-security",
     "jotai": "^2.7.0",
     "net": "^1.0.2",
-    "next": "12",
+    "next": "^14.1.0",
     "p5": "^1.4.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "sass": "1.26.3",
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1"

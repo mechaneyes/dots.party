@@ -6,44 +6,26 @@ const DotOne = (props) => {
   const [numPaintersOnLoad, setNumPaintersOnLoad] = useState(0);
   const [numPainters, setNumPainters] = useState(0);
 
+  let socket;
   let spreadDots = useRef(0);
 
-  let theDot;
   let r = 20;
 
-  let socket;
-
   useEffect(() => {
-    socketInitializer();
+    socket = io("http://localhost:3009");
+
+    // Receive dots from other users:
+    socket.on("broadcast-dot", (dotData) => {
+      // Access dotData (x, y, r, red, green, blue, opacity)
+      // Use your `ExternalDot` class to draw it
+      let externalDot = new ExternalDot(...dotData);
+    });
+
+    // Update painter count:
+    socket.on("update-painters", (numPainters) => {
+      setNumPainters(numPainters);
+    });
   }, []);
-
-  const socketInitializer = async () => {
-    try {
-      await fetch("/api/socketDots");
-
-      socket = io(); // Connect only after fetch resolves
-
-      socket.on("update-painters", (msg) => {
-        setNumPainters(msg);
-      });
-
-      socket.on("first-load", (msg) => {
-        setNumPaintersOnLoad(msg);
-      });
-
-      socket.on("update-dot", (msg) => {
-        let externalDots = msg;
-        spreadDots = [...externalDots];
-      });
-
-      // Add cleanup function
-      return () => {
-        socket.disconnect();
-      };
-    } catch (error) {
-      console.error("Error initializing socket:", error);
-    }
-  };
 
   useEffect(() => {
     setNumPainters(numPaintersOnLoad);
@@ -85,25 +67,6 @@ const DotOne = (props) => {
   //
   const [colors, setColors] = useState(colorwayUtopia);
 
-  // const refreshColors = (cols) => {
-  //   if (document.getElementsByTagName("canvas")) {
-  //     let el = document.getElementsByTagName("canvas"),
-  //       index;
-
-  //     for (index = el.length - 1; index >= 0; index--) {
-  //       el[index].parentNode.removeChild(el[index]);
-  //     }
-
-  //     // new p5(Sketch);
-  //   }
-
-  //   setColors(cols);
-
-  //   // console.log(
-  //   //   "// ————————————————————————————————————o " + props.colorway + " —>"
-  //   // );
-  // };
-
   let rando = colors;
   let randChange = false;
 
@@ -132,11 +95,39 @@ const DotOne = (props) => {
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
   //
+
+  // ————————————————————————————————————o external dot class —>
+  //
+  const ExternalDot = class {
+    constructor(x, y, r, red, green, blue, opacity) {
+      this.x = x;
+      this.y = y;
+      this.r = r;
+      this.red = red;
+      this.green = green;
+      this.blue = blue;
+      this.opacity = opacity;
+    }
+
+    // New method to render the dot with p5:
+    draw(s) {
+      // Pass in the p5 instance 's'
+      s.noStroke();
+      s.fill(this.red, this.green, this.blue, this.opacity);
+      s.circle(this.x, this.y, this.r);
+    }
+  };
+
   let sketcher;
   useEffect(() => (sketcher = new p5(Sketch)), []);
 
   const Sketch = (s) => {
-    // let r = 5;
+    socket.on("broadcast-dot", (dotData) => {
+      let externalDot = new ExternalDot(...dotData);
+      externalDot.draw(s);
+    });
+
+    let currentColors = colors;
 
     s.setup = () => {
       const canvasDiv = document.getElementById("canvas-holder");
@@ -149,16 +140,22 @@ const DotOne = (props) => {
       s.background(0);
     };
 
-    // ————————————————————————————————————o p5 draw —>
-    //
+    let theDot;
+
+    // Send a dot when drawn (adjust this to fit your drawing logic)
     s.draw = () => {
+      if (colors !== currentColors) {
+        // Check if colors have changed
+        s.background(0); // Clear to black
+        currentColors = colors; // Update
+      }
+
       if (s.mouseIsPressed === true) {
+        // Create a new 'Dot' object when the mouse is pressed
         r += 2;
         theDot = new Dot(r);
-        // console.log('theDot', theDot)
 
-        // ————————————————————————————————————o socket.emit —>
-        //
+        // Emit to the server
         socket.emit("add-dot", [
           theDot.x,
           theDot.y,
@@ -169,16 +166,6 @@ const DotOne = (props) => {
           theDot.opacity,
         ]);
       }
-
-      let externalDots = new ExternalDot(
-        spreadDots[0],
-        spreadDots[1],
-        spreadDots[2],
-        spreadDots[3],
-        spreadDots[4],
-        spreadDots[5],
-        spreadDots[6]
-      );
     };
 
     s.mouseReleased = () => {
@@ -187,29 +174,6 @@ const DotOne = (props) => {
 
     s.touchEnded = () => {
       r = 10;
-    };
-
-    const resetSketch = () => {
-      const Dot = class {
-        constructor(r) {
-          // console.log('// ————————————————————————————————————o reset —>')
-          // console.log("rando", rando[0]);
-
-          let ranColor = colors[Math.floor(Math.random() * colors.length)];
-
-          this.x = s.mouseX;
-          this.y = s.mouseY;
-          this.r = r;
-          this.red = ranColor[0];
-          this.green = ranColor[1];
-          this.blue = ranColor[2];
-          this.opacity = ranColor[3];
-
-          s.noStroke;
-          s.fill(this.red, this.green, this.blue, this.opacity);
-          s.circle(this.x, this.y, this.r);
-        }
-      };
     };
 
     if (randChange === true) {
@@ -231,24 +195,6 @@ const DotOne = (props) => {
         this.green = ranColor[1];
         this.blue = ranColor[2];
         this.opacity = ranColor[3];
-
-        s.noStroke;
-        s.fill(this.red, this.green, this.blue, this.opacity);
-        s.circle(this.x, this.y, this.r);
-      }
-    };
-
-    // ————————————————————————————————————o external dot class —>
-    //
-    const ExternalDot = class {
-      constructor(x, y, r, red, green, blue, opacity) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.opacity = opacity;
 
         s.noStroke;
         s.fill(this.red, this.green, this.blue, this.opacity);

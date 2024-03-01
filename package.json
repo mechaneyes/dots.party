@@ -9,7 +9,6 @@
   "dependencies": {
     "eslint-config-next": "^14.1.0",
     "fs": "^0.0.1-security",
-    "jotai": "^2.7.0",
     "net": "^1.0.2",
     "next": "^14.1.0",
     "p5": "^1.4.2",

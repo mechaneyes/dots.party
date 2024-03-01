@@ -1,17 +1,15 @@
-import Script from "next/script";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { useAtom } from "jotai";
-import { qrAtom } from "../abstracts/jotaiAtoms";
 
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 import Splash from "../components/Splash";
+import Nudge from "../components/Nudge";
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
-  const [qr, setQr] = useAtom(qrAtom);
   const [showSplash, setShowSplash] = useState(true);
+  const [fader, setFader] = useState(false);
 
   let splashScreen = showSplash ? <Splash /> : null;
 
@@ -25,13 +23,37 @@ export default function Home() {
       setShowSplash(false);
     };
 
-    document.addEventListener('click', handleClick);
+    document.addEventListener("click", handleClick);
 
     // Cleanup function
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener("click", handleClick);
     };
   }, []);
+
+  useEffect(() => {
+    if (!showSplash) {
+      setTimeout(() => {
+        setFader(true);
+      }, 1500);
+    }
+  }, [showSplash]);
+
+  useEffect(() => {
+    if (fader) {
+      setTimeout(() => {
+        setFader(false);
+      }, 2000);
+
+      const handleSecondClick = () => {
+        setFader(false);
+      };
+      document.addEventListener("click", handleSecondClick);
+      return () => {
+        document.removeEventListener("click", handleSecondClick);
+      };
+    }
+  }, [fader]);
 
   return (
     <>
@@ -48,33 +70,19 @@ export default function Home() {
         />
       </Head>
       <div className="app">
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-V4X33FRRRS"
-          strategy="afterInteractive"
-        ></Script>
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-V4X33FRRRS');
-      `}
-        </Script>
-
-        {/* <div className="navbar">
-        <button onClick={() => colorHandler('colorwayGarden')}>
-          <h3>🍖</h3>
-        </button>
-        <button onClick={() => colorHandler('colorwayStadium')}>
-          <h3>🪬</h3>
-        </button>
-        <button onClick={() => colorHandler('colorwayUtopia')}>
-          <h3>🏂</h3>
-        </button>
-      </div> */}
         {splashScreen}
+        {/* <CSSTransition
+          in={showNudge}
+          appear={showNudge}
+          timeout={1000}
+          classNames="fade"
+          unmountOnExit
+        >
+          <Nudge />
+        </CSSTransition> */}
+
+        <Nudge fader={fader} />
+
         <div id="canvas-holder"></div>
         <p className="feedback">
           <a href="mailto:ray@mechaneyes.com">feedback</a>

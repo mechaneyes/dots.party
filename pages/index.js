@@ -8,10 +8,8 @@ import Nudge from "../components/Nudge";
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
-  const [showSplash, setShowSplash] = useState(true);
   const [fader, setFader] = useState(false);
-
-  let splashScreen = showSplash ? <Splash /> : null;
+  const [splashFader, setSplashFader] = useState(true);
 
   const colorHandler = (colorClicked) => {
     setColorway(colorClicked);
@@ -20,7 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleClick = () => {
-      setShowSplash(false);
+      setSplashFader(false);
     };
 
     document.addEventListener("click", handleClick);
@@ -32,12 +30,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!showSplash) {
+    if (!splashFader) {
       setTimeout(() => {
         setFader(true);
-      }, 1500);
+      }, 1800);
     }
-  }, [showSplash]);
+  }, [splashFader]);
 
   useEffect(() => {
     if (fader) {
@@ -70,17 +68,7 @@ export default function Home() {
         />
       </Head>
       <div className="app">
-        {splashScreen}
-        {/* <CSSTransition
-          in={showNudge}
-          appear={showNudge}
-          timeout={1000}
-          classNames="fade"
-          unmountOnExit
-        >
-          <Nudge />
-        </CSSTransition> */}
-
+        <Splash fader={splashFader}  />
         <Nudge fader={fader} />
 
         <div id="canvas-holder"></div>

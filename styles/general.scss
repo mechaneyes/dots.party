@@ -78,7 +78,7 @@ canvas {
   }
 }
 
-.doorbell {
+.splash {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,10 +88,17 @@ canvas {
   height: 100%;
   left: 50%;
   transform: translateX(-50%);
+  opacity: 1;
+  transition: opacity 200ms linear;
   z-index: 2;
+
+  &--not-visible {
+    opacity: 0;
+    transition: opacity 200ms linear;
+  }
 }
 
-.doorbell_inner {
+.splash_inner {
   position: relative;
   z-index: 2;
 }
@@ -133,7 +140,7 @@ canvas {
   line-height: 1;
   border: 0;
   border-radius: 50%;
-  background-color: #f11a05;
+  background-color: #e84200;
   z-index: 1;
 }
 
@@ -145,7 +152,7 @@ canvas {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: #0774d7;
+    background-color: #266492;
     background-color: #0674d7;
     opacity: 0.7;
   }
@@ -157,7 +164,7 @@ canvas {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #0774d7;
+    background-color: #1067ca;
     opacity: 0.7;
   }
 
@@ -168,7 +175,7 @@ canvas {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #0774d7;
+    background-color: #1067ca;
     opacity: 0.7;
   }
 }

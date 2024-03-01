@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "concurrently \"node server.js\" \"next dev\"",
     "build": "next build",
-    "lint": "next lint",
+    "lint": "next lint"
   },
   "dependencies": {
     "concurrently": "^8.2.2",

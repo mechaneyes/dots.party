@@ -12,7 +12,7 @@ const DotOne = (props) => {
   let r = 20;
 
   useEffect(() => {
-    socket = io("http://localhost:3009");
+    socket = io("https://dots.party:3009");
 
     // Receive dots from other users:
     socket.on("broadcast-dot", (dotData) => {

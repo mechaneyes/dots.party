@@ -12,7 +12,7 @@ const DotOne = (props) => {
   let r = 20;
 
   useEffect(() => {
-    socket = io("https://dots-party.vercel.app/api/socket-server");
+    socket = io("https://dots.party/api/socket-server");
 
     // Receive dots from other users:
     socket.on("broadcast-dot", (dotData) => {

@@ -1,70 +1,36 @@
-import cors from "cors";
-import express from "express";
-import http from "http";
 import { Server } from "socket.io";
 
-async function startServer() {
-  const app = express();
+let io;
 
-  // Set up CORS middleware for Express
-  const corsOptions = {
-    origin: "https://dots.party", // or use '*' to allow all origins
-    methods: ["GET", "POST"],
-    credentials: true, // allow session cookie from browser to pass through
-  };
-  app.use(cors(corsOptions));
+export default async function handler(req, res) {
+  // Initialize Socket.IO only once
+  if (!io) {
+    io = new Server(res.socket.server);
 
-  const server = http.createServer(app);
+    // Socket.io Logic
+    io.on("connection", (socket) => {
+      console.log("A user connected");
 
-  // Set up CORS configuration for Socket.IO
-  const ioOptions = {
-    cors: {
-      origin: "https://dots.party", // or use '*' to allow all origins
-      methods: ["GET", "POST"],
-      credentials: true,
-    },
-  };
+      // Broadcast dot data to other clients
+      socket.on("add-dot", (dotData) => {
+        // Ensure dotData is valid (e.g., has the required properties)
 
-  const ioInstance = new Server(server, ioOptions);
+        // Assuming dotData initially contains x, y, r, red, green, blue, opacity
+        socket.broadcast.emit("broadcast-dot", dotData);
+      });
 
-  // Socket.io Logic
-  ioInstance.on("connection", (socket) => {
-    console.log("A user connected");
+      // Update the number of connected painters
+      let numPainters = io.engine.clientsCount;
+      io.emit("update-painters", numPainters);
 
-    // Broadcast dot data to other clients
-    socket.on("add-dot", (dotData) => {
-      // Assuming dotData initially contains x, y, r
-      // const color = // ... get the color of the dot on the server ...
-      const completeDotData = [
-        dotData[0],
-        dotData[1],
-        dotData[2],
-        dotData[3],
-        dotData[4],
-        dotData[5],
-        dotData[6],
-        dotData[7],
-      ];
-      console.log("completeDotData", completeDotData);
-      socket.broadcast.emit("broadcast-dot", completeDotData);
+      // Handle disconnection
+      socket.on("disconnect", () => {
+        console.log("A user disconnected");
+        numPainters = io.engine.clientsCount;
+        io.emit("update-painters", numPainters);
+      });
     });
+  }
 
-    // Update the number of connected painters
-    let numPainters = ioInstance.engine.clientsCount;
-    ioInstance.emit("update-painters", numPainters);
-
-    // Handle disconnection
-    socket.on("disconnect", () => {
-      console.log("A user disconnected");
-      numPainters = ioInstance.engine.clientsCount;
-      ioInstance.emit("update-painters", numPainters);
-    });
-  });
-
-  const port = process.env.PORT || 3009;
-  server.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-  });
+  res.end();
 }
-
-startServer();

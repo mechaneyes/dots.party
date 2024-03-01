@@ -8,7 +8,7 @@ async function startServer() {
 
   // Set up CORS middleware for Express
   const corsOptions = {
-    origin: "http://localhost:3000", // or use '*' to allow all origins
+    origin: "https://dots.party", // or use '*' to allow all origins
     methods: ["GET", "POST"],
     credentials: true, // allow session cookie from browser to pass through
   };
@@ -19,7 +19,7 @@ async function startServer() {
   // Set up CORS configuration for Socket.IO
   const ioOptions = {
     cors: {
-      origin: "http://localhost:3000", // or use '*' to allow all origins
+      origin: "https://dots.party", // or use '*' to allow all origins
       methods: ["GET", "POST"],
       credentials: true,
     },

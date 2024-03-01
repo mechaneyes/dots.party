@@ -13,10 +13,20 @@ export default async function handler(req, res) {
 
       // Broadcast dot data to other clients
       socket.on("add-dot", (dotData) => {
-        // Ensure dotData is valid (e.g., has the required properties)
-
-        // Assuming dotData initially contains x, y, r, red, green, blue, opacity
-        socket.broadcast.emit("broadcast-dot", dotData);
+        // Assuming dotData initially contains x, y, r
+        // const color = // ... get the color of the dot on the server ...
+        const completeDotData = [
+          dotData[0],
+          dotData[1],
+          dotData[2],
+          dotData[3],
+          dotData[4],
+          dotData[5],
+          dotData[6],
+          dotData[7],
+        ];
+        console.log("completeDotData", completeDotData);
+        socket.broadcast.emit("broadcast-dot", completeDotData);
       });
 
       // Update the number of connected painters

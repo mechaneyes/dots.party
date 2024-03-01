@@ -140,6 +140,8 @@ const DotOne = (props) => {
   useEffect(() => (sketcher = new p5(Sketch)), []);
 
   const Sketch = (s) => {
+    let r = 5;
+
     s.setup = () => {
       const canvasDiv = document.getElementById("canvas-holder");
       const width = canvasDiv.offsetWidth;

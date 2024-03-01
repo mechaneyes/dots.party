@@ -1,5 +1,5 @@
-import Script from "next/script";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
@@ -8,12 +8,6 @@ const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 
 export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
-
-  const colorHandler = (colorClicked) => {
-    setColorway(colorClicked);
-    // console.log('colorClicked', colorClicked)
-  };
-
   return (
     <>
       <Head>
@@ -36,10 +30,8 @@ export default function Home() {
           className="qr-code"
           width={300}
           height={300}
+          priority={true}
         />
-        <p className="feedback">
-          <a href="mailto:ray@mechaneyes.com">feedback</a>
-        </p>
         <DotOne colorway={colorway} />
       </div>
     </>

@@ -9,13 +9,9 @@ const DotOne = (props) => {
   let spreadDots = useRef(0);
 
   let theDot;
-  let r;
+  let r = 20;
 
   let socket;
-
-  // ————————————————————————————————————o————————————————————————————————————o socket.io -->
-  // ————————————————————————————————————o socket.io —>
-  //
 
   useEffect(() => {
     socketInitializer();
@@ -140,7 +136,7 @@ const DotOne = (props) => {
   useEffect(() => (sketcher = new p5(Sketch)), []);
 
   const Sketch = (s) => {
-    let r = 5;
+    // let r = 5;
 
     s.setup = () => {
       const canvasDiv = document.getElementById("canvas-holder");
@@ -185,8 +181,12 @@ const DotOne = (props) => {
       );
     };
 
-    s.mousePressed = () => {
-      r = 20;
+    s.mouseReleased = () => {
+      r = 10;
+    };
+
+    s.touchEnded = () => {
+      r = 10;
     };
 
     const resetSketch = () => {

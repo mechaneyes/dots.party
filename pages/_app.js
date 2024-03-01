@@ -1,7 +1,7 @@
 import Layout from '../components/layout'
 import '../styles/general.scss'
 
-const ZeeApp = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps }) => {
   return (
     <Layout>
       <Component {...pageProps} />
@@ -9,4 +9,4 @@ const ZeeApp = ({ Component, pageProps }) => {
   )
 }
 
-export default ZeeApp
+export default App

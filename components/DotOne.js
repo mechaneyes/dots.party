@@ -53,7 +53,7 @@ const DotOne = () => {
     const setupSocketConnection = async () => {
       try {
         await fetch("/api/socket");
-        socket = io("http://localhost:3000");
+        socket = io("https://dots.party/");
 
         socket.on("update-collaborators", (numCollaborators) => {
           setNumCollaborators(numCollaborators);

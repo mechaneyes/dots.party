@@ -2,29 +2,12 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import p5 from "p5";
 
-const DotOne = (props) => {
+const DotOne = () => {
   const [numCollaborators, setNumCollaborators] = useState(0);
-  const [externalDots, setExternalDots] = useState([]); // State to store received dots
 
   let socket;
+  let externalDots = [];
   let r = 20;
-
-  // useEffect(() => {
-  //   const setupSocketConnection = async () => {
-  //     try {
-  //       await fetch("/api/socket"); // Trigger server-side logic if needed
-  //       socket = io("http://localhost:3000");
-
-  //       socket.on("update-collaborators", (numCollaborators) => {
-  //         setNumCollaborators(numCollaborators);
-  //       });
-  //     } catch (error) {
-  //       console.error("Error initializing WebSocket connection:", error);
-  //     }
-  //   };
-
-  //   setupSocketConnection();
-  // }, []);
 
   // ————————————————————————————————————o————————————————————————————————————o colors -->
   // ————————————————————————————————————o colors —>
@@ -57,62 +40,12 @@ const DotOne = (props) => {
   ];
 
   // ————————————————————————————————————o color changes —>
-  // state being set in function to enable resetting of
-  // the p5 sketch when the colorway changes
-  //
-  const [colors, setColors] = useState(colorwayUtopia);
+  const colors = colorwayUtopia;
 
-  let rando = colors;
-  let randChange = false;
-
-  useEffect(() => {
-    rando = colors;
-    // console.log("rando", rando[0]);
-    // console.log('randChange', randChange)
-  }, [colors]);
-
-  useEffect(() => {
-    randChange = true;
-
-    switch (props.colorway) {
-      case "colorwayGarden":
-        refreshColors(colorwayGarden);
-        break;
-      case "colorwayStadium":
-        refreshColors(colorwayStadium);
-        break;
-      case "colorwayUtopia":
-        refreshColors(colorwayUtopia);
-        break;
-    }
-  }, [props.colorway]);
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
   //
-
-  // ————————————————————————————————————o external dot class —>
-  //
-  const ExternalDot = class {
-    constructor(x, y, r, red, green, blue, opacity) {
-      this.x = x;
-      this.y = y;
-      this.r = r;
-      this.red = red;
-      this.green = green;
-      this.blue = blue;
-      this.opacity = opacity;
-    }
-
-    // New method to render the dot with p5:
-    draw(s) {
-      // Pass in the p5 instance 's'
-      s.noStroke();
-      s.fill(this.red, this.green, this.blue, this.opacity);
-      s.circle(this.x, this.y, this.r);
-    }
-  };
-
   let sketcher;
   useEffect(() => (sketcher = new p5(Sketch)), []);
 
@@ -150,8 +83,6 @@ const DotOne = (props) => {
       s.background(0);
     };
 
-    let theDot;
-
     // Send a dot when drawn (adjust this to fit your drawing logic)
     s.draw = () => {
       if (colors !== currentColors) {
@@ -163,7 +94,7 @@ const DotOne = (props) => {
       if (s.mouseIsPressed === true) {
         // Create a new 'Dot' object when the mouse is pressed
         r += 2;
-        theDot = new Dot(r);
+        let theDot = new Dot(r);
 
         // Emit to the server
         socket.emit("add-dot", [
@@ -189,15 +120,10 @@ const DotOne = (props) => {
       r = 10;
     };
 
-    if (randChange === true) {
-      // console.log('randChange flipped', randChange)
-    }
-
     // ————————————————————————————————————o dots class —>
     //
     const Dot = class {
       constructor(r) {
-        // console.log("rando", rando[0]);
         let ranColor = colors[Math.floor(Math.random() * colors.length)];
 
         this.x = s.mouseX;
@@ -217,6 +143,28 @@ const DotOne = (props) => {
         });
 
         s.noStroke;
+        s.fill(this.red, this.green, this.blue, this.opacity);
+        s.circle(this.x, this.y, this.r);
+      }
+    };
+
+    // ————————————————————————————————————o external dot class —>
+    //
+    const ExternalDot = class {
+      constructor(x, y, r, red, green, blue, opacity) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.opacity = opacity;
+      }
+  
+      // New method to render the dot with p5:
+      draw(s) {
+        // Pass in the p5 instance 's'
+        s.noStroke();
         s.fill(this.red, this.green, this.blue, this.opacity);
         s.circle(this.x, this.y, this.r);
       }

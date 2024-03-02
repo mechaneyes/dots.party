@@ -1,6 +1,6 @@
 import { Server } from 'socket.io'
 
-const SocketHandler = (req, res) => {
+const SocketHandler = (res) => {
   if (res.socket.server.io) {
     console.log('Socket is already running')
   } else {
@@ -18,8 +18,8 @@ const SocketHandler = (req, res) => {
       // Broadcast dot data to other clients
       socket.on("add-dot", (dotData) => {
         console.log("Received dotData:", dotData);
-        // Assuming dotData initially contains x, y, r
-        // const color = // ... get the color of the dot on the server ...
+        
+        // x, y, r, red, green, blue, opacity
         const completeDotData = [
           dotData[0],
           dotData[1],
@@ -37,7 +37,7 @@ const SocketHandler = (req, res) => {
       // Handle disconnection
       socket.on("disconnect", () => {
         console.log("A user disconnected");
-        
+
         numCollaborators = io.engine.clientsCount;
         io.emit("update-collaborators", numCollaborators);
       });

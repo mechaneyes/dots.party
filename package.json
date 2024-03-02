@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "concurrently \"node server.js\" \"next dev\"",
+    "tmp": "concurrently \"node server.js\" \"next dev\"",
+    "dev": "next dev",
     "build": "next build",
     "lint": "next lint"
   },
@@ -22,5 +23,9 @@
     "string-width": "4.2.0",
     "strip-ansi": "6.0.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@types/react": "18.2.61",
+    "typescript": "5.3.3"
+  }
 }

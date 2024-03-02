@@ -1,35 +1,30 @@
-import { useRef, useEffect, useState } from "react";
-import io from "socket.io-client";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import p5 from "p5";
 
 const DotOne = (props) => {
-  const [numPaintersOnLoad, setNumPaintersOnLoad] = useState(0);
-  const [numPainters, setNumPainters] = useState(0);
+  const [numCollaborators, setNumCollaborators] = useState(0);
+  const [externalDots, setExternalDots] = useState([]); // State to store received dots
 
   let socket;
-  let spreadDots = useRef(0);
-
   let r = 20;
 
-  useEffect(() => {
-    socket = io("https://dots.party/api/socket-server/", { path: '/api/socket-server' }); 
+  // useEffect(() => {
+  //   const setupSocketConnection = async () => {
+  //     try {
+  //       await fetch("/api/socket"); // Trigger server-side logic if needed
+  //       socket = io("http://localhost:3000");
 
-    // Receive dots from other users:
-    socket.on("broadcast-dot", (dotData) => {
-      // Access dotData (x, y, r, red, green, blue, opacity)
-      // Use your `ExternalDot` class to draw it
-      let externalDot = new ExternalDot(...dotData);
-    });
+  //       socket.on("update-collaborators", (numCollaborators) => {
+  //         setNumCollaborators(numCollaborators);
+  //       });
+  //     } catch (error) {
+  //       console.error("Error initializing WebSocket connection:", error);
+  //     }
+  //   };
 
-    // Update painter count:
-    socket.on("update-painters", (numPainters) => {
-      setNumPainters(numPainters);
-    });
-  }, []);
-
-  useEffect(() => {
-    setNumPainters(numPaintersOnLoad);
-  }, [numPaintersOnLoad]);
+  //   setupSocketConnection();
+  // }, []);
 
   // ————————————————————————————————————o————————————————————————————————————o colors -->
   // ————————————————————————————————————o colors —>
@@ -122,10 +117,25 @@ const DotOne = (props) => {
   useEffect(() => (sketcher = new p5(Sketch)), []);
 
   const Sketch = (s) => {
-    socket.on("broadcast-dot", (dotData) => {
-      let externalDot = new ExternalDot(...dotData);
-      externalDot.draw(s);
-    });
+    const setupSocketConnection = async () => {
+      try {
+        await fetch("/api/socket");
+        socket = io("http://localhost:3000");
+
+        socket.on("update-collaborators", (numCollaborators) => {
+          setNumCollaborators(numCollaborators);
+        });
+
+        socket.on("broadcast-dot", (dotData) => {
+          let externalDot = new ExternalDot(...dotData);
+          externalDot.draw(s);
+        });
+      } catch (error) {
+        console.error("Error initializing WebSocket connection:", error);
+      }
+    };
+
+    setupSocketConnection();
 
     let currentColors = colors;
 
@@ -166,6 +176,9 @@ const DotOne = (props) => {
           theDot.opacity,
         ]);
       }
+
+      // Render received dots
+      externalDots.forEach((dot) => dot.draw(s));
     };
 
     s.mouseReleased = () => {
@@ -180,8 +193,7 @@ const DotOne = (props) => {
       // console.log('randChange flipped', randChange)
     }
 
-    // ————————————————————————————————————o————————————————————————————————————o dots classes -->
-    // ————————————————————————————————————o dots classes —>
+    // ————————————————————————————————————o dots class —>
     //
     const Dot = class {
       constructor(r) {
@@ -196,6 +208,14 @@ const DotOne = (props) => {
         this.blue = ranColor[2];
         this.opacity = ranColor[3];
 
+        // Emit to the server
+        socket.emit("add-dot", {
+          x: this.x,
+          y: this.y,
+          r: this.r,
+          color: ranColor,
+        });
+
         s.noStroke;
         s.fill(this.red, this.green, this.blue, this.opacity);
         s.circle(this.x, this.y, this.r);
@@ -206,9 +226,9 @@ const DotOne = (props) => {
   return (
     <>
       <p className="num-collaborators">
-        {numPainters <= 1
+        {numCollaborators <= 1
           ? "1 Collaborator Onlline"
-          : numPainters + " Collaborators Onlline"}
+          : numCollaborators + " Collaborators Onlline"}
       </p>
     </>
   );

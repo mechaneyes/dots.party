@@ -1,18 +1,23 @@
-import { Server } from "socket.io";
+import { Server } from 'socket.io'
 
-let io;
-
-export default async function handler(req, res) {
-  // Initialize Socket.IO only once
-  if (!io) {
-    io = new Server(res.socket.server);
+const SocketHandler = (req, res) => {
+  if (res.socket.server.io) {
+    console.log('Socket is already running')
+  } else {
+    console.log('Socket is initializing')
+    const io = new Server(res.socket.server)
+    res.socket.server.io = io
 
     // Socket.io Logic
     io.on("connection", (socket) => {
       console.log("A user connected");
 
+      let numCollaborators = io.engine.clientsCount;
+      io.emit("update-collaborators", numCollaborators);
+
       // Broadcast dot data to other clients
       socket.on("add-dot", (dotData) => {
+        console.log("Received dotData:", dotData);
         // Assuming dotData initially contains x, y, r
         // const color = // ... get the color of the dot on the server ...
         const completeDotData = [
@@ -25,22 +30,20 @@ export default async function handler(req, res) {
           dotData[6],
           dotData[7],
         ];
-        console.log("completeDotData", completeDotData);
+        console.log("Broadcasting dotData:", dotData);
         socket.broadcast.emit("broadcast-dot", completeDotData);
       });
-
-      // Update the number of connected painters
-      let numPainters = io.engine.clientsCount;
-      io.emit("update-painters", numPainters);
 
       // Handle disconnection
       socket.on("disconnect", () => {
         console.log("A user disconnected");
-        numPainters = io.engine.clientsCount;
-        io.emit("update-painters", numPainters);
+        
+        numCollaborators = io.engine.clientsCount;
+        io.emit("update-collaborators", numCollaborators);
       });
     });
   }
-
-  res.end();
+  res.end()
 }
+
+export default SocketHandler

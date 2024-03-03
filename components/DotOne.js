@@ -2,38 +2,16 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import p5 from "p5";
 
-// ————————————————————————————————————o————————————————————————————————————o colors -->
 // ————————————————————————————————————o colors —>
-//
-// https://color.adobe.com/Cold-Garden-color-theme-20547576/
-const colorwayGarden = [
-  [46, 56, 142, 95],
-  [53, 101, 242, 95],
-  [121, 217, 128, 85],
-  [177, 242, 167, 95],
-  [241, 242, 201, 95],
-];
-
-// https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
-const colorwayStadium = [
-  [72, 76, 115, 98],
-  [242, 135, 68, 98],
-  [242, 238, 121, 98],
-  [242, 135, 68, 98],
-  [242, 82, 68, 98],
-];
-
+// 
 // https://color.adobe.com/UTOPIA-color-theme-20547494
-const colorwayUtopia = [
+const colors = [
   [1, 22, 64, 98],
   [4, 118, 217, 98],
   [242, 184, 75, 98],
   [242, 116, 5, 98],
   [242, 25, 5, 98],
 ];
-
-// ————————————————————————————————————o color changes —>
-const colors = colorwayUtopia;
 
 const DotOne = () => {
   const [numCollaborators, setNumCollaborators] = useState(0);

@@ -2,6 +2,17 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import p5 from "p5";
 
+// ————————————————————————————————————o colors —>
+// 
+// https://color.adobe.com/UTOPIA-color-theme-20547494
+const colors = [
+  [1, 22, 64, 98],
+  [4, 118, 217, 98],
+  [242, 184, 75, 98],
+  [242, 116, 5, 98],
+  [242, 25, 5, 98],
+];
+
 const DotOne = () => {
   const [numCollaborators, setNumCollaborators] = useState(0);
 
@@ -9,39 +20,56 @@ const DotOne = () => {
   let externalDots = [];
   let r = 20;
 
-  // ————————————————————————————————————o————————————————————————————————————o colors -->
-  // ————————————————————————————————————o colors —>
+  // ————————————————————————————————————o————————————————————————————————————o classes -->
+  // ————————————————————————————————————o dots class —>
   //
-  // https://color.adobe.com/Cold-Garden-color-theme-20547576/
-  const colorwayGarden = [
-    [46, 56, 142, 95],
-    [53, 101, 242, 95],
-    [121, 217, 128, 85],
-    [177, 242, 167, 95],
-    [241, 242, 201, 95],
-  ];
+  const Dot = class {
+    constructor(s, r) {
+      let ranColor = colors[Math.floor(Math.random() * colors.length)];
 
-  // https://color.adobe.com/Stadium-Car---Trackmania-color-theme-20547493
-  const colorwayStadium = [
-    [72, 76, 115, 98],
-    [242, 135, 68, 98],
-    [242, 238, 121, 98],
-    [242, 135, 68, 98],
-    [242, 82, 68, 98],
-  ];
+      this.x = s.mouseX;
+      this.y = s.mouseY;
+      this.r = r;
+      this.red = ranColor[0];
+      this.green = ranColor[1];
+      this.blue = ranColor[2];
+      this.opacity = ranColor[3];
 
-  // https://color.adobe.com/UTOPIA-color-theme-20547494
-  const colorwayUtopia = [
-    [1, 22, 64, 98],
-    [4, 118, 217, 98],
-    [242, 184, 75, 98],
-    [242, 116, 5, 98],
-    [242, 25, 5, 98],
-  ];
+      // Emit to the server
+      socket.emit("add-dot", {
+        x: this.x,
+        y: this.y,
+        r: this.r,
+        color: ranColor,
+      });
 
-  // ————————————————————————————————————o color changes —>
-  const colors = colorwayUtopia;
+      s.noStroke;
+      s.fill(this.red, this.green, this.blue, this.opacity);
+      s.circle(this.x, this.y, this.r);
+    }
+  };
 
+  // ————————————————————————————————————o external dot class —>
+  //
+  const ExternalDot = class {
+    constructor(x, y, r, red, green, blue, opacity) {
+      this.x = x;
+      this.y = y;
+      this.r = r;
+      this.red = red;
+      this.green = green;
+      this.blue = blue;
+      this.opacity = opacity;
+    }
+
+    // New method to render the dot with p5:
+    draw(s) {
+      // Pass in the p5 instance 's'
+      s.noStroke();
+      s.fill(this.red, this.green, this.blue, this.opacity);
+      s.circle(this.x, this.y, this.r);
+    }
+  };
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
@@ -52,7 +80,9 @@ const DotOne = () => {
   const Sketch = (s) => {
     const setupSocketConnection = async () => {
       try {
-        await fetch("/api/socket");
+        socket = io(process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '', {
+          transports: ['websocket'],
+        });
 
         socket.on("update-collaborators", (collaborators) => {
           setNumCollaborators(collaborators);
@@ -93,7 +123,7 @@ const DotOne = () => {
       if (s.mouseIsPressed === true) {
         // Create a new 'Dot' object when the mouse is pressed
         r += 2;
-        let theDot = new Dot(r);
+        const theDot = new Dot(s, r);
 
         // Emit to the server
         socket.emit("add-dot", [
@@ -117,56 +147,6 @@ const DotOne = () => {
 
     s.touchEnded = () => {
       r = 10;
-    };
-
-    // ————————————————————————————————————o dots class —>
-    //
-    const Dot = class {
-      constructor(r) {
-        let ranColor = colors[Math.floor(Math.random() * colors.length)];
-
-        this.x = s.mouseX;
-        this.y = s.mouseY;
-        this.r = r;
-        this.red = ranColor[0];
-        this.green = ranColor[1];
-        this.blue = ranColor[2];
-        this.opacity = ranColor[3];
-
-        // Emit to the server
-        socket.emit("add-dot", {
-          x: this.x,
-          y: this.y,
-          r: this.r,
-          color: ranColor,
-        });
-
-        s.noStroke;
-        s.fill(this.red, this.green, this.blue, this.opacity);
-        s.circle(this.x, this.y, this.r);
-      }
-    };
-
-    // ————————————————————————————————————o external dot class —>
-    //
-    const ExternalDot = class {
-      constructor(x, y, r, red, green, blue, opacity) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.opacity = opacity;
-      }
-  
-      // New method to render the dot with p5:
-      draw(s) {
-        // Pass in the p5 instance 's'
-        s.noStroke();
-        s.fill(this.red, this.green, this.blue, this.opacity);
-        s.circle(this.x, this.y, this.r);
-      }
     };
   };
 

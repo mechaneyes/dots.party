@@ -1,6 +1,14 @@
 import { Server } from 'socket.io'
 
-const SocketHandler = (res) => {
+// Disable Next.js body parsing
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+
+const SocketHandler = (req, res) => {
   if (res.socket.server.io) {
     console.log('Socket is already running')
   } else {

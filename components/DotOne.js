@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import p5 from "p5";
+import { ref, push } from 'firebase/database';
+
+import database from '../firebaseConfig';
 
 // ————————————————————————————————————o colors —>
 // 

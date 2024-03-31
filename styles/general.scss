@@ -33,16 +33,8 @@ html {
 body {
   position: relative;
   margin: 0;
-  // dvh = dynamic viewport height, dvw = dynamic viewport width
-  // https://developer.mozilla.org/en-US/docs/Web/CSS/length
-  width: 100dvw;
-  height: 100dvh;
-  max-width: 430px;
-  max-height: 750px;
   width: 100%;
   height: 100%;
-  max-width: 430px;
-  max-height: 750px;
 }
 
 .app {
@@ -92,29 +84,40 @@ canvas {
   pointer-events: none;
 }
 
-.toggle-full {
-  display: block;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: auto;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  z-index: 2;
-  cursor: pointer;
-}
-
 .rotate-device {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   margin: 0;
   background-color: blue;
   z-index: 3;
+}
+
+.toggle-full {
+  margin: 0;
+  padding: 0;
+  z-index: 3;
+  cursor: pointer;
+
+  &--full {
+    display: block;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  &--not-full {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+  }
 }
 
 .feedback {

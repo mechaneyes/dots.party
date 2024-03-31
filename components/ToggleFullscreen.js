@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useState } from "react";
 
 const ToggleFullscreen = () => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const openFullscreen = () => {
     const elem = document.querySelector(".app");
     if (elem.requestFullscreen) {
@@ -9,6 +11,7 @@ const ToggleFullscreen = () => {
       /* Safari */
       elem.webkitRequestFullscreen();
     }
+    setIsFullscreen(true);
   };
 
   const closeFullscreen = () => {
@@ -18,6 +21,7 @@ const ToggleFullscreen = () => {
       /* Safari */
       document.webkitExitFullscreen();
     }
+    setIsFullscreen(false);
   };
 
   const toggleFullscreen = () => {
@@ -30,8 +34,15 @@ const ToggleFullscreen = () => {
 
   return (
     <>
-      <p className="toggle-full" onClick={toggleFullscreen}>
-        fullscreen
+      <p
+        className={
+          isFullscreen
+            ? "toggle-full toggle-full--full"
+            : "toggle-full toggle-full--not-full"
+        }
+        onClick={toggleFullscreen}
+      >
+        {isFullscreen ? "exit fullscreen" : "enter fullscreen"}
       </p>
     </>
   );

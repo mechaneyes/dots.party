@@ -1,7 +1,36 @@
-const Splash = ({ fader }) => {
+import { useState, useEffect } from "react";
+import { useAtom } from "jotai";
+import { splasherAtom, nudgerAtom } from "../store";
+
+const Splash = () => {
+  const [splasher, setSplasher] = useAtom(splasherAtom);
+  const [nudger, setNudger] = useAtom(nudgerAtom);
+
+  useEffect(() => {
+    const splashElement = document.querySelector(".splash");
+
+    const handleClick = () => {
+      console.log("splash clicked");
+      setSplasher(false);
+    };
+
+    splashElement.addEventListener("click", handleClick);
+
+    // Listen for the transition to end
+    splashElement.addEventListener("transitionend", function () {
+      // Remove the element from the DOM
+      splashElement.parentNode.removeChild(splashElement);
+    });
+
+    // Cleanup function
+    return () => {
+      splashElement.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
     <>
-      <div className={`${!fader ? "splash splash--not-visible" : "splash"}`}>
+      <div className={`${splasher ? "splash" : "splash splash--not-visible"}`}>
         <div className="splash_inner">
           <div className="dot dot--top-left"></div>
           <div className="dot dot--top-right"></div>

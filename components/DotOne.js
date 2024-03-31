@@ -113,15 +113,15 @@ const DotOne = () => {
     let currentColors = colors;
 
     s.setup = () => {
-      const canvasDiv = document.getElementById("canvas-holder");
-      const width = canvasDiv.offsetWidth;
-      const height = canvasDiv.offsetHeight;
-
-      const canvas = s.createCanvas(width, height);
+      const canvas = s.createCanvas(s.windowWidth, s.windowHeight);
       canvas.parent("canvas-holder");
       s.noStroke();
       s.background(0);
     };
+
+    s.windowResized = () => {
+      s.resizeCanvas(s.windowWidth, s.windowHeight);
+    }
 
     // Send a dot when drawn (adjust this to fit your drawing logic)
     s.draw = () => {

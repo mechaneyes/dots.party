@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import p5 from "p5";
 
 // ————————————————————————————————————o colors —>
-// 
+//
 // https://color.adobe.com/UTOPIA-color-theme-20547494
 const colors = [
   [1, 22, 64, 98],
@@ -75,14 +75,25 @@ const DotOne = () => {
   // ————————————————————————————————————o p5 —>
   //
   let sketcher;
-  useEffect(() => (sketcher = new p5(Sketch)), []);
+
+  useEffect(() => {
+    sketcher = new p5(Sketch);
+
+    // Return a cleanup function
+    return () => {
+      sketcher.remove();
+    };
+  }, []);
 
   const Sketch = (s) => {
     const setupSocketConnection = async () => {
       try {
-        socket = io(process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '', {
-          transports: ['websocket'],
-        });
+        socket = io(
+          process.env.NODE_ENV === "development" ? "http://localhost:3000" : "",
+          {
+            transports: ["websocket"],
+          }
+        );
 
         socket.on("update-collaborators", (collaborators) => {
           setNumCollaborators(collaborators);

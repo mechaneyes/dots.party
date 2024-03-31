@@ -10,11 +10,52 @@ export default function Home() {
   const [colorway, setColorway] = useState("colUtopia");
   const [fader, setFader] = useState(false);
   const [splashFader, setSplashFader] = useState(true);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const colorHandler = (colorClicked) => {
     setColorway(colorClicked);
     // console.log('colorClicked', colorClicked)
   };
+
+  let elem;
+
+  useEffect(() => {
+    elem = document.querySelector(".toggle-full");
+  }, []);
+
+  /* View in fullscreen */
+  const openFullscreen = () => {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+      /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  };
+
+  /* Close fullscreen */
+  const closeFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      /* Safari */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      /* IE11 */
+      document.msExitFullscreen();
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      closeFullscreen();
+    } else {
+      openFullscreen();
+    }
+  }
 
   useEffect(() => {
     const handleClick = () => {
@@ -68,12 +109,15 @@ export default function Home() {
         />
       </Head>
       <div className="app">
-        <Splash fader={splashFader}  />
+        <Splash fader={splashFader} />
         <Nudge fader={fader} />
 
         <div id="canvas-holder"></div>
-        <p className="feedback">
-          <a href="mailto:ray@mechaneyes.com">feedback</a>
+        <p
+          className="toggle-full"
+          onClick={toggleFullscreen}
+        >
+          toggle
         </p>
         <DotOne colorway={colorway} />
       </div>

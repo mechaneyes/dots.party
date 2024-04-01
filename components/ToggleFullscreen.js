@@ -6,7 +6,7 @@ const ToggleFullscreen = () => {
   const openFullscreen = () => {
     const elem = document.querySelector(".app");
     if (elem.requestFullscreen) {
-      elem.requestFullscreen();
+      elem.requestFullscreen({ navigationUI: "show" });
     } else if (elem.webkitRequestFullscreen) {
       /* Safari */
       elem.webkitRequestFullscreen();

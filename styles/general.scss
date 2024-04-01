@@ -59,6 +59,7 @@ canvas {
   position: absolute;
   top: 0;
   width: 100dvw;
+  width: 100vw;
   height: 100dvh;
   height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
@@ -98,6 +99,7 @@ canvas {
   justify-content: center;
   align-items: center;
   width: 100dvw;
+  width: 100vw;
   height: 100dvh;
   height: calc(var(--vh, 1vh) * 100);
   margin: 0;
@@ -175,6 +177,7 @@ canvas {
   justify-content: center;
   align-items: center;
   width: 100dvw;
+  width: 100vw;
   height: 100dvh;
   height: calc(var(--vh, 1vh) * 100);
   opacity: 1;
@@ -200,6 +203,7 @@ canvas {
   justify-content: center;
   align-items: center;
   width: 100dvw;
+  width: 100vw;
   height: 100dvh;
   height: calc(var(--vh, 1vh) * 100);
   z-index: 2;

@@ -45,7 +45,7 @@ export default function Home() {
         />
       </Head>
       <div className="app">
-        <ToggleFullscreen />
+        {/* <ToggleFullscreen /> */}
         <RotateDevice />
         <Splash />
         <Nudge />

@@ -134,49 +134,47 @@ const DotOne = () => {
         currentColors = colors; // Update
       }
 
-      // Render received dots
-      for (let dot of externalDots) {
-        dot.draw(s);
+      if (s.mouseIsPressed === true) {
+        // Create a new 'Dot' object when the mouse is pressed
+        r += 2;
+        const theDot = new Dot(s, r);let ranColor = colors[Math.floor(Math.random() * colors.length)];
+
+        const dot = {
+          x: s.mouseX,
+          y: s.mouseY,
+          radius: r, // assuming r is defined and holds the radius value
+          color: {
+            red: ranColor[0],
+            green: ranColor[1],
+            blue: ranColor[2],
+            alpha: ranColor[3],
+          },
+        };
+  
+        const newExternalDot = new ExternalDot(
+          dot.x,
+          dot.y,
+          dot.radius,
+          dot.color.red,
+          dot.color.green,
+          dot.color.blue,
+          dot.color.alpha
+        );
+        setExternalDots((prevDots) => [...prevDots, newExternalDot]);
+  
+        // Insert new dot into Supabase
+        supabase
+          .from("sketches")
+          .insert([dot])
+          .then(({ data, error }) => {
+            if (error) {
+              console.error("Error saving the dot:", error);
+            }
+          });
       }
-    };
 
-    s.mousePressed = () => {
-      // Calculate your dot parameters...
-      let ranColor = colors[Math.floor(Math.random() * colors.length)];
-
-      const dot = {
-        x: s.mouseX,
-        y: s.mouseY,
-        radius: r, // assuming r is defined and holds the radius value
-        color: {
-          red: ranColor[0],
-          green: ranColor[1],
-          blue: ranColor[2],
-          alpha: ranColor[3],
-        },
-      };
-
-      const newExternalDot = new ExternalDot(
-        dot.x,
-        dot.y,
-        dot.radius,
-        dot.color.red,
-        dot.color.green,
-        dot.color.blue,
-        dot.color.alpha
-      );
-      console.log("newMousePressedlDot:", newExternalDot);
-      setExternalDots((prevDots) => [...prevDots, newExternalDot]);
-
-      // Insert new dot into Supabase
-      supabase
-        .from("sketches")
-        .insert([dot])
-        .then(({ data, error }) => {
-          if (error) {
-            console.error("Error saving the dot:", error);
-          }
-        });
+      // Render received dots
+      externalDots.forEach((dot) => dot.draw(s));
     };
 
     s.mouseReleased = () => {

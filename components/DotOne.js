@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import p5 from "p5";
-import supabase from './supabaseClient';
+import supabase from "./supabaseClient";
 
 // ————————————————————————————————————o colors —>
 //
@@ -15,12 +15,12 @@ const colors = [
 
 const DotOne = () => {
   const [numCollaborators, setNumCollaborators] = useState(0);
-  const [externalDots, setExternalDots] = useState([]);
-  
+
   let r = 20;
+  let externalDots = [];
 
   // ————————————————————————————————————o————————————————————————————————————o classes -->
-  // ————————————————————————————————————o dots class —>
+  // ————————————————————————————————————o dots classes —>
   //
   const Dot = class {
     constructor(s, r) {
@@ -40,27 +40,54 @@ const DotOne = () => {
     }
   };
 
-  // ————————————————————————————————————o external dot class —>
+  // ————————————————————————————————————o recieved dot class —>
   //
   const ExternalDot = class {
-    constructor(x, y, r, red, green, blue, opacity) {
+    constructor(x, y, radius, color) {
       this.x = x;
       this.y = y;
-      this.r = r;
-      this.red = red;
-      this.green = green;
-      this.blue = blue;
-      this.opacity = opacity;
+      this.r = radius;
+      this.color = color;
     }
 
-    // New method to render the dot with p5:
+    // method to render the dot with p5 passing in the p5 instance 's'
     draw(s) {
-      // Pass in the p5 instance 's'
       s.noStroke();
-      s.fill(this.red, this.green, this.blue, this.opacity);
+      s.fill(
+        this.color.red,
+        this.color.green,
+        this.color.blue,
+        this.color.alpha
+      );
       s.circle(this.x, this.y, this.r);
     }
   };
+
+  // ————————————————————————————————————o————————————————————————————————————o supabase realtime -->
+  // ————————————————————————————————————o supabase realtime —>
+  //
+  const handleInserts = (payload) => {
+    console.log("payload", payload.new);
+    const newExternalDot = new ExternalDot(
+      payload.new.x,
+      payload.new.y,
+      payload.new.radius,
+      payload.new.color
+    );
+    externalDots.push(newExternalDot);
+  };
+
+  // Supabase init
+  useEffect(() => {
+    supabase
+      .channel("supaChannel")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "sketches" },
+        handleInserts
+      )
+      .subscribe();
+  }, []);
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
   // ————————————————————————————————————o p5 —>
@@ -76,42 +103,6 @@ const DotOne = () => {
     };
   }, []);
 
-  // ————————————————————————————————————o————————————————————————————————————o supabase realtime -->
-  // ————————————————————————————————————o supabase realtime —>
-  //
-  // Initialization of Supabase real-time updates
-  useEffect(() => {
-    const supaChannel = supabase
-      .channel("sketches")
-      .on("*", (payload) => {
-        console.log("Received payload:", payload);
-
-        const newDot = payload.new;
-        console.log("newDot:", newDot);
-
-        const newExternalDot = new ExternalDot(
-          newDot.x,
-          newDot.y,
-          newDot.radius,
-          newDot.color.red,
-          newDot.color.green,
-          newDot.color.blue,
-          newDot.color.alpha
-        );
-        console.log("newExternalDot:", newExternalDot);
-        setExternalDots((prevDots) => [...prevDots, newExternalDot]);
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(supaChannel);
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log("externalDots", externalDots);
-  }, [externalDots]);
-
   const Sketch = (s) => {
     let currentColors = colors;
 
@@ -122,27 +113,26 @@ const DotOne = () => {
       s.background(0);
     };
 
-    s.windowResized = () => {
-      s.resizeCanvas(s.windowWidth, s.windowHeight);
-    };
-
-    // Send a dot when drawn (adjust this to fit your drawing logic)
+    // ————————————————————————————————————o draw —>
+    //
     s.draw = () => {
+      // Check if colors have changed and update
       if (colors !== currentColors) {
-        // Check if colors have changed
         s.background(0); // Clear to black
         currentColors = colors; // Update
       }
 
       if (s.mouseIsPressed === true) {
-        // Create a new 'Dot' object when the mouse is pressed
+        // Create a new 'Dot' object when the mouse is pressed.
+        // Grow the radius on each draw tick
         r += 2;
-        const theDot = new Dot(s, r);let ranColor = colors[Math.floor(Math.random() * colors.length)];
+        new Dot(s, r);
 
+        let ranColor = colors[Math.floor(Math.random() * colors.length)];
         const dot = {
           x: s.mouseX,
           y: s.mouseY,
-          radius: r, // assuming r is defined and holds the radius value
+          radius: r,
           color: {
             red: ranColor[0],
             green: ranColor[1],
@@ -150,18 +140,9 @@ const DotOne = () => {
             alpha: ranColor[3],
           },
         };
-  
-        const newExternalDot = new ExternalDot(
-          dot.x,
-          dot.y,
-          dot.radius,
-          dot.color.red,
-          dot.color.green,
-          dot.color.blue,
-          dot.color.alpha
-        );
-        setExternalDots((prevDots) => [...prevDots, newExternalDot]);
-  
+
+        // ————————————————————————————————————o draw —>
+        //
         // Insert new dot into Supabase
         supabase
           .from("sketches")
@@ -176,13 +157,25 @@ const DotOne = () => {
       // Render received dots
       externalDots.forEach((dot) => dot.draw(s));
     };
-
+    
+    // ————————————————————————————————————o radius resetting —>
+    //
+    // reset radius back to 10 when mouse is released
     s.mouseReleased = () => {
       r = 10;
     };
 
+    // reset radius back to 10 when touch is released
     s.touchEnded = () => {
       r = 10;
+    };
+    
+    // ————————————————————————————————————o canvas resizing —>
+    //
+    // resize canvas when window is resized to fill screen
+    // 
+    s.windowResized = () => {
+      s.resizeCanvas(s.windowWidth, s.windowHeight);
     };
   };
 

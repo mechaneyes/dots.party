@@ -87,16 +87,36 @@ canvas {
   pointer-events: none;
 }
 
-.rotate-device {
-  position: absolute;
+.rotate {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
   margin: 0;
-  background-color: blue;
+  background-color: #131740;
   z-index: 3;
+
+  &__copy {
+    margin: 0;
+  }
+
+  &__image {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    animation: rotation 2s infinite linear;
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
 }
 
 .toggle-full {

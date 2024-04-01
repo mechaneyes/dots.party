@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
 import p5 from "p5";
+import supabase from './supabaseClient';
 
 // ————————————————————————————————————o colors —>
 //
@@ -15,9 +15,8 @@ const colors = [
 
 const DotOne = () => {
   const [numCollaborators, setNumCollaborators] = useState(0);
-
-  let socket;
-  let externalDots = [];
+  const [externalDots, setExternalDots] = useState([]);
+  
   let r = 20;
 
   // ————————————————————————————————————o————————————————————————————————————o classes -->
@@ -34,14 +33,6 @@ const DotOne = () => {
       this.green = ranColor[1];
       this.blue = ranColor[2];
       this.opacity = ranColor[3];
-
-      // Emit to the server
-      socket.emit("add-dot", {
-        x: this.x,
-        y: this.y,
-        r: this.r,
-        color: ranColor,
-      });
 
       s.noStroke;
       s.fill(this.red, this.green, this.blue, this.opacity);
@@ -85,31 +76,43 @@ const DotOne = () => {
     };
   }, []);
 
-  const Sketch = (s) => {
-    const setupSocketConnection = async () => {
-      try {
-        socket = io(
-          process.env.NODE_ENV === "development" ? "http://localhost:3000" : "",
-          {
-            transports: ["websocket"],
-          }
+  // ————————————————————————————————————o————————————————————————————————————o supabase realtime -->
+  // ————————————————————————————————————o supabase realtime —>
+  //
+  // Initialization of Supabase real-time updates
+  useEffect(() => {
+    const supaChannel = supabase
+      .channel("sketches")
+      .on("*", (payload) => {
+        console.log("Received payload:", payload);
+
+        const newDot = payload.new;
+        console.log("newDot:", newDot);
+
+        const newExternalDot = new ExternalDot(
+          newDot.x,
+          newDot.y,
+          newDot.radius,
+          newDot.color.red,
+          newDot.color.green,
+          newDot.color.blue,
+          newDot.color.alpha
         );
+        console.log("newExternalDot:", newExternalDot);
+        setExternalDots((prevDots) => [...prevDots, newExternalDot]);
+      })
+      .subscribe();
 
-        socket.on("update-collaborators", (collaborators) => {
-          setNumCollaborators(collaborators);
-        });
-
-        socket.on("broadcast-dot", (dotData) => {
-          let externalDot = new ExternalDot(...dotData);
-          externalDot.draw(s);
-        });
-      } catch (error) {
-        console.error("Error initializing WebSocket connection:", error);
-      }
+    return () => {
+      supabase.removeChannel(supaChannel);
     };
+  }, []);
 
-    setupSocketConnection();
+  useEffect(() => {
+    console.log("externalDots", externalDots);
+  }, [externalDots]);
 
+  const Sketch = (s) => {
     let currentColors = colors;
 
     s.setup = () => {
@@ -121,7 +124,7 @@ const DotOne = () => {
 
     s.windowResized = () => {
       s.resizeCanvas(s.windowWidth, s.windowHeight);
-    }
+    };
 
     // Send a dot when drawn (adjust this to fit your drawing logic)
     s.draw = () => {
@@ -131,25 +134,49 @@ const DotOne = () => {
         currentColors = colors; // Update
       }
 
-      if (s.mouseIsPressed === true) {
-        // Create a new 'Dot' object when the mouse is pressed
-        r += 2;
-        const theDot = new Dot(s, r);
-
-        // Emit to the server
-        socket.emit("add-dot", [
-          theDot.x,
-          theDot.y,
-          theDot.r,
-          theDot.red,
-          theDot.green,
-          theDot.blue,
-          theDot.opacity,
-        ]);
-      }
-
       // Render received dots
-      externalDots.forEach((dot) => dot.draw(s));
+      for (let dot of externalDots) {
+        dot.draw(s);
+      }
+    };
+
+    s.mousePressed = () => {
+      // Calculate your dot parameters...
+      let ranColor = colors[Math.floor(Math.random() * colors.length)];
+
+      const dot = {
+        x: s.mouseX,
+        y: s.mouseY,
+        radius: r, // assuming r is defined and holds the radius value
+        color: {
+          red: ranColor[0],
+          green: ranColor[1],
+          blue: ranColor[2],
+          alpha: ranColor[3],
+        },
+      };
+
+      const newExternalDot = new ExternalDot(
+        dot.x,
+        dot.y,
+        dot.radius,
+        dot.color.red,
+        dot.color.green,
+        dot.color.blue,
+        dot.color.alpha
+      );
+      console.log("newMousePressedlDot:", newExternalDot);
+      setExternalDots((prevDots) => [...prevDots, newExternalDot]);
+
+      // Insert new dot into Supabase
+      supabase
+        .from("sketches")
+        .insert([dot])
+        .then(({ data, error }) => {
+          if (error) {
+            console.error("Error saving the dot:", error);
+          }
+        });
     };
 
     s.mouseReleased = () => {

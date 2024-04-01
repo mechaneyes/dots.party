@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.41.1",
     "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "eslint-config-next": "^14.1.0",

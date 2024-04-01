@@ -87,6 +87,10 @@ const DotOne = () => {
         handleInserts
       )
       .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel)
+      }
   }, []);
 
   // ————————————————————————————————————o————————————————————————————————————o p5 -->
@@ -107,7 +111,7 @@ const DotOne = () => {
     let currentColors = colors;
 
     s.setup = () => {
-      const canvas = s.createCanvas(windowWidth, s.displayHeight);
+      const canvas = s.createCanvas(window.innerWidth, window.innerWidth);
       canvas.parent("canvas-holder");
       s.noStroke();
       s.background(0);
@@ -175,7 +179,7 @@ const DotOne = () => {
     // resize canvas when window is resized to fill screen
     // 
     s.windowResized = () => {
-      s.resizeCanvas(window.innerWidth, window.innerHeight);
+      s.resizeCanvas(window.innerWidth, window.innerWidth);
     };
   };
 

@@ -107,7 +107,7 @@ const DotOne = () => {
     let currentColors = colors;
 
     s.setup = () => {
-      const canvas = s.createCanvas(s.windowWidth, s.windowHeight);
+      const canvas = s.createCanvas(windowWidth, s.displayHeight);
       canvas.parent("canvas-holder");
       s.noStroke();
       s.background(0);
@@ -175,7 +175,7 @@ const DotOne = () => {
     // resize canvas when window is resized to fill screen
     // 
     s.windowResized = () => {
-      s.resizeCanvas(s.windowWidth, s.windowHeight);
+      s.resizeCanvas(window.innerWidth, window.innerHeight);
     };
   };
 

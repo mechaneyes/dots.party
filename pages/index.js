@@ -18,6 +18,10 @@ export default function Home() {
         "--vh",
         `${window.innerHeight * 0.01}px`
       );
+      document.documentElement.style.setProperty(
+        "--vw",
+        `${window.innerWidth * 0.01}px`
+      );
     };
 
     // handleResize function to set the --vh variable when component mounts

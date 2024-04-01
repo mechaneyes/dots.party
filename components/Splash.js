@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
-import { splasherAtom, nudgerAtom } from "../store";
+import { splasherAtom } from "../store";
 
 const Splash = () => {
   const [splasher, setSplasher] = useAtom(splasherAtom);
-  const [nudger, setNudger] = useAtom(nudgerAtom);
 
   useEffect(() => {
     const splashElement = document.querySelector(".splash");

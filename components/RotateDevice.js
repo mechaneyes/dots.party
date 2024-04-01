@@ -19,7 +19,7 @@ const RotateDevice = () => {
   return (
     <>
       <div className="rotate">
-        <p className="rotate__copy">rotate your device</p>
+        <p className="rotate__copy">rotate<br />device</p>
         <img className="rotate__image" src="/images/rotate.gif" alt="rotate device" />
       </div>
     </>

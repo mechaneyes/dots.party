@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import dynamic from "next/dynamic";
 import Head from "next/head";
 
@@ -9,6 +10,25 @@ import ToggleFullscreen from "../components/ToggleFullscreen";
 
 export default function Home() {
   const colorway = "colUtopia";
+
+  useEffect(() => {
+    // Set a CSS variable with the actual height of the window
+    const handleResize = () => {
+      document.documentElement.style.setProperty(
+        "--vh",
+        `${window.innerHeight * 0.01}px`
+      );
+    };
+
+    // handleResize function to set the --vh variable when component mounts
+    handleResize();
+
+    // event listener added on mount and removed when it unmounts
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -25,7 +45,7 @@ export default function Home() {
         />
       </Head>
       <div className="app">
-        {/* <ToggleFullscreen /> */}
+        <ToggleFullscreen />
         <RotateDevice />
         <Splash />
         <Nudge />

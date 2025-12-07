@@ -4,32 +4,32 @@ import { splasherAtom } from "../store";
 
 const Splash = () => {
   const [splasher, setSplasher] = useAtom(splasherAtom);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const splashElement = document.querySelector(".splash");
-
     const handleClick = () => {
-      console.log("splash clicked");
-      setSplasher(false);
+      if (splasher && !fadeOut) {
+        setFadeOut(true);
+        setTimeout(() => {
+          setSplasher(false);
+        }, 500);
+      }
     };
 
     document.addEventListener("click", handleClick);
 
-    // Listen for the transition to end
-    splashElement.addEventListener("transitionend", function () {
-      // Remove the element from the DOM
-      splashElement.parentNode.removeChild(splashElement);
-    });
-
-    // Cleanup function
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [splasher, fadeOut, setSplasher]);
+
+  if (!splasher && fadeOut) {
+    return null;
+  }
 
   return (
     <>
-      <div className={`${splasher ? "splash" : "splash splash--not-visible"}`}>
+      <div className={`splash ${fadeOut ? "splash--fading-out" : ""}`}>
         <div className="splash_inner">
           <div className="dot dot--top-left"></div>
           <div className="dot dot--top-right"></div>

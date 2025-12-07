@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useAtom } from "jotai";
+import { splasherAtom } from "../store";
 
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
 import Splash from "../components/Splash";
@@ -9,6 +11,7 @@ import ToggleFullscreen from "../components/ToggleFullscreen";
 
 export default function Home() {
   const colorway = "colUtopia";
+  const [splasher] = useAtom(splasherAtom);
 
   useEffect(() => {
     // Set a CSS variable with the actual height of the window

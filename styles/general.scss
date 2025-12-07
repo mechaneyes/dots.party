@@ -88,47 +88,6 @@ canvas {
   pointer-events: none;
 }
 
-.rotate {
-  position: fixed; // Use fixed instead of relative
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100dvw;
-  // width: 100vw;
-  width: calc(var(--vw, 1vw) * 100);
-  height: 100dvh;
-  height: calc(var(--vh, 1vh) * 100);
-  margin: 0;
-  background-color: #131740;
-  z-index: 3;
-
-  &__copy {
-    margin: 0;
-    font-size: 1.5rem;
-    text-align: center;
-  }
-
-  &__image {
-    position: absolute;
-    width: 350px;
-    height: 350px;
-    animation: rotation 2s infinite linear;
-  }
-
-  @keyframes rotation {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(359deg);
-    }
-  }
-}
-
 .toggle-full {
   margin: 0;
   padding: 0;
@@ -174,6 +133,7 @@ canvas {
 }
 
 .splash {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -183,14 +143,13 @@ canvas {
   height: 100dvh;
   height: calc(var(--vh, 1vh) * 100);
   opacity: 1;
-  transition: opacity 200ms linear;
+  transition: opacity 500ms ease-out;
   z-index: 2;
-  // pointer-events: none;
   background-color: black;
 
-  &--not-visible {
+  &--fading-out {
     opacity: 0;
-    transition: opacity 200ms linear;
+    pointer-events: none;
   }
 }
 
@@ -211,7 +170,7 @@ canvas {
   height: calc(var(--vh, 1vh) * 100);
   z-index: 2;
   opacity: 1;
-  transition: opacity 300ms linear;
+  transition: opacity 700ms linear;
 
   .enter {
     width: 120px;
@@ -221,7 +180,7 @@ canvas {
 
   &--not-visible {
     opacity: 0;
-    transition: opacity 300ms linear;
+    transition: opacity 700ms linear;
   }
 }
 

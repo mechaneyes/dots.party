@@ -13,7 +13,7 @@ const Splash = () => {
       setSplasher(false);
     };
 
-    splashElement.addEventListener("click", handleClick);
+    document.addEventListener("click", handleClick);
 
     // Listen for the transition to end
     splashElement.addEventListener("transitionend", function () {
@@ -23,7 +23,7 @@ const Splash = () => {
 
     // Cleanup function
     return () => {
-      splashElement.removeEventListener("click", handleClick);
+      document.removeEventListener("click", handleClick);
     };
   }, []);
 

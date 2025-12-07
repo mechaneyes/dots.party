@@ -186,8 +186,8 @@ const DotOne = () => {
     <>
       <p className="num-collaborators">
         {numCollaborators <= 1
-          ? "1 Collaborator Onlline"
-          : numCollaborators + " Collaborators Onlline"}
+          ? "Just you for now"
+          : numCollaborators + " Collaborators Online"}
       </p>
     </>
   );

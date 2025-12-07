@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 
 const DotOne = dynamic(() => import("../components/DotOne"), { ssr: false });
-import RotateDevice from "../components/RotateDevice";
 import Splash from "../components/Splash";
 import Nudge from "../components/Nudge";
 import ToggleFullscreen from "../components/ToggleFullscreen";
@@ -50,10 +49,12 @@ export default function Home() {
       </Head>
       <div className="app">
         {/* <ToggleFullscreen /> */}
-        <RotateDevice />
         <Splash />
         <Nudge />
-        <div id="canvas-holder"></div>
+        <div
+          id="canvas-holder"
+          style={{ width: "100vw", height: "100vh" }}
+        ></div>
         <DotOne colorway={colorway} />
       </div>
     </>

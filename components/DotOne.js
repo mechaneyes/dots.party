@@ -6,11 +6,11 @@ import supabase from "./supabaseClient";
 //
 // https://color.adobe.com/UTOPIA-color-theme-20547494
 const colors = [
-  [1, 22, 64, 98],
-  [4, 118, 217, 98],
-  [242, 184, 75, 98],
-  [242, 116, 5, 98],
-  [242, 25, 5, 98],
+  [1, 22, 64, 90],
+  [4, 118, 217, 90],
+  [242, 184, 75, 90],
+  [242, 116, 5, 90],
+  [242, 25, 5, 90],
 ];
 
 const DotOne = () => {
@@ -67,7 +67,6 @@ const DotOne = () => {
   // ————————————————————————————————————o supabase realtime —>
   //
   const handleInserts = (payload) => {
-    console.log("payload", payload.new);
     const newExternalDot = new ExternalDot(
       payload.new.x,
       payload.new.y,
@@ -111,7 +110,7 @@ const DotOne = () => {
     let currentColors = colors;
 
     s.setup = () => {
-      const canvas = s.createCanvas(window.innerWidth, window.innerWidth);
+      const canvas = s.createCanvas(window.innerWidth, window.innerHeight);
       canvas.parent("canvas-holder");
       s.noStroke();
       s.background(0);
@@ -179,7 +178,7 @@ const DotOne = () => {
     // resize canvas when window is resized to fill screen
     // 
     s.windowResized = () => {
-      s.resizeCanvas(window.innerWidth, window.innerWidth);
+      s.resizeCanvas(window.innerWidth, window.innerHeight);
     };
   };
 

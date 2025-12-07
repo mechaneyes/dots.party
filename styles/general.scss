@@ -43,9 +43,8 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  height: 100vh;
 }
 
 canvas {
@@ -251,8 +250,8 @@ canvas {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: #266492;
     background-color: #0674d7;
+    background-color: #e2ae50;
     opacity: 0.7;
   }
 
@@ -263,7 +262,7 @@ canvas {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #1067ca;
+    background-color: #ff8816;
     opacity: 0.7;
   }
 
@@ -274,7 +273,7 @@ canvas {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #1067ca;
+    background-color: #2e87ff;
     opacity: 0.7;
   }
 }

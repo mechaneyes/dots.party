@@ -1,8 +1,8 @@
 # dots.party
 
-### https://dots.party/
-
 ![dots.party screenshot](public/images/dots-dot-party-1.0.0.jpg)
+
+# https://dots.party/
 
 dots.party is a collaborative drawing application. Users connect to a shared canvas via websockets where they place primitive shapes (currently circles) on that canvas. A circle placed on one user's screen immediately shows up on all users' screens.
 
@@ -12,21 +12,19 @@ In the context of events, I typically project a browser screen with dots.party r
 
 <br>
 
-## Tools and Technologies
+# Tools and Technologies
 
-https://p5js.org/ + https://nextjs.org/ + https://socket.io/
-
-<br>
-
-In progress is the integration of Supabase to have persistent data when a player launches the app. Currently they enter onto a blank canvas, and are typically confused as to what to do.
-
-https://supabase.com/
+### [p5.js](https://p5js.org/) &middot; [Next.js](https://nextjs.org/) &middot; [WebSockets](https://supabase.com/realtime)
 
 <br>
 
-Additionally I'm working with React Native + Expo to flesh out a proper mobile app.
+I've leveraged [WebSockets in Supabase Realtime](https://supabase.com/realtime) to enable users' activity on their devices to be replicated on all other connected devices instantaneously ... or close to it.
 
-https://expo.dev/
+Unfortunately storing and immediately broadcasting that same data seems a bit daunting. Early experiments have been slow, clunky, go out for a smoke while it's drawn to the screen. More experimentation to do here.
+
+<br>
+
+Eventually I'll look to work with React Native to flesh out a proper mobile app.
 
 
 <br><br><br>
